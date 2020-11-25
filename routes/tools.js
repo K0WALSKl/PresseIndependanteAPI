@@ -15,6 +15,7 @@ let getJsonFromRSSFeed = async function(endpoint, callback) {
 
 
 let updateLRELP = async function() {
+    console.log("Update de La Relève Et La Peste...");
     const endpoint = 'https://lareleveetlapeste.fr/feed';
     let json = await getJsonFromRSSFeed(endpoint, function(res) {
         let jsonArticles = [];
@@ -31,13 +32,16 @@ let updateLRELP = async function() {
                 author: article['dc:creator'] == undefined ? "Inconnu" : article['dc:creator'].toString()
             });
         })
+        console.log("RSS de La Relève Et La Peste récupéré. Sauvegarde...")
         fs.unlinkSync('./news/LaReleveEtLaPeste.json');
         fs.writeFileSync('./news/LaReleveEtLaPeste.json', JSON.stringify(jsonArticles, null, '\t'));
+        console.log("La Relève Et La Peste Sauvegardé");
     });
 }
 
 let updateNouveauJour = async function() {
-        const endpoint = 'http://www.nouveaujourj.fr/?format=feed';
+    console.log("Update du NouveauJourJ...");
+    const endpoint = 'http://www.nouveaujourj.fr/?format=feed';
     let json = await getJsonFromRSSFeed(endpoint, function(res) {
         let jsonArticles = [];
 
@@ -53,8 +57,10 @@ let updateNouveauJour = async function() {
                 author: article['author'] == undefined ? "Inconnu" : article['author'].toString()
             });
         })
-        fs.unlinkSync('./news/NouveauJour.json');
-        fs.writeFileSync('./news/NouveauJour.json', JSON.stringify(jsonArticles, null, '\t'));
+        console.log("RSS du NouveauJourJ récupéré. Sauvegarde...")
+        fs.unlinkSync('./news/NouveauJourJ.json');
+        fs.writeFileSync('./news/NouveauJourJ.json', JSON.stringify(jsonArticles, null, '\t'));
+        console.log("NouveauJourJ Sauvegardé");
     });
 }
 
