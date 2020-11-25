@@ -20,16 +20,14 @@ let updateLRELP = async function() {
     let json = await getJsonFromRSSFeed(endpoint, function(res) {
         let jsonArticles = [];
 
-        console.log(res.rss.channel[0].item);
         res.rss.channel[0].item.forEach(article => {
-            console.log(article)
             jsonArticles.push({
                 url: article.link.toString(),
                 imageUrl: null,
                 title: article.title.toString(),
                 publicationDate: article.pubDate.toString(),
                 description: article.description.toString(),
-                author: article['dc:creator'] == undefined ? "Inconnu" : article['dc:creator'].toString()
+                author: "Inconnu"
             });
         })
         console.log("RSS de La Relève Et La Peste récupéré. Sauvegarde...")
@@ -45,9 +43,7 @@ let updateNouveauJour = async function() {
     let json = await getJsonFromRSSFeed(endpoint, function(res) {
         let jsonArticles = [];
 
-        console.log(res.rss.channel[0].item);
         res.rss.channel[0].item.forEach(article => {
-            console.log(article)
             jsonArticles.push({
                 url: article.link.toString(),
                 imageUrl: null,
@@ -64,13 +60,35 @@ let updateNouveauJour = async function() {
     });
 }
 
+let updateLesJours = async function() {
+    console.log("Update du Les Jours...");
+    const endpoint = 'https://lesjours.fr/rss.xml';
+    let json = await getJsonFromRSSFeed(endpoint, function(res) {
+        let jsonArticles = [];
 
+        res.rss.channel[0].item.forEach(article => {
+            jsonArticles.push({
+                url: article.link.toString(),
+                imageUrl: null,
+                title: article.title.toString(),
+                publicationDate: article.pubDate.toString(),
+                description: article.description.toString(),
+                author: "Inconnu"
+            });
+        })
+        console.log("RSS du Les Jours récupéré. Sauvegarde...")
+        fs.unlinkSync('./news/LesJours.json');
+        fs.writeFileSync('./news/LesJours.json', JSON.stringify(jsonArticles, null, '\t'));
+        console.log("Les Jours Sauvegardé");
+    });
+}
 
 // En abs du fichier car je ne sais pas comment est géré l'appel des fonctions qui sont définis après (genre en C)
 let updateNews = async function() {
     const updateNewsfunctions = [
         updateLRELP,
         updateNouveauJour,
+        updateLesJours
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
