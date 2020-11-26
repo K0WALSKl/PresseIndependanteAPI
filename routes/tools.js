@@ -25,7 +25,7 @@ let updateLRELP = async function() {
                 url: article.link.toString(),
                 imageUrl: null,
                 title: article.title.toString(),
-                publicationDate: article.pubDate.toString(),
+                publicationDate: new Date(article.pubDate).toISOString(),
                 description: article.description.toString(),
                 author: "Inconnu"
             });
@@ -37,7 +37,7 @@ let updateLRELP = async function() {
     });
 }
 
-let updateNouveauJour = async function() {
+let updateNouveauJourJ = async function() {
     console.log("Update du NouveauJourJ...");
     const endpoint = 'http://www.nouveaujourj.fr/?format=feed';
     let json = await getJsonFromRSSFeed(endpoint, function(res) {
@@ -47,9 +47,9 @@ let updateNouveauJour = async function() {
             jsonArticles.push({
                 url: article.link.toString(),
                 imageUrl: null,
-                title: article.title.toString(),
-                publicationDate: article.pubDate.toString(),
-                description: article.description.toString(),
+                title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+                publicationDate: new Date(article.pubDate).toISOString(),
+                description: article.description.toString().replace(/[^\x00-\x7F]/g, ""),
                 author: article['author'] == undefined ? "Inconnu" : article['author'].toString()
             });
         })
@@ -71,7 +71,7 @@ let updateLesJours = async function() {
                 url: article.link.toString(),
                 imageUrl: null,
                 title: article.title.toString(),
-                publicationDate: article.pubDate.toString(),
+                publicationDate: new Date(article.pubDate).toISOString(),
                 description: article.description.toString(),
                 author: "Inconnu"
             });
@@ -87,7 +87,7 @@ let updateLesJours = async function() {
 let updateNews = async function() {
     const updateNewsfunctions = [
         updateLRELP,
-        updateNouveauJour,
+        updateNouveauJourJ,
         updateLesJours
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.

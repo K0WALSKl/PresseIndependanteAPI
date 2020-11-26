@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', indexRouter);
 app.use('/getNews', getNews);
 
-cron.schedule('*/1 * * * *', () => {
+cron.schedule('*/22 * * * *', () => { // 22 minutes
     tools.updateNews().then(r => console.log(r));
 });
 
