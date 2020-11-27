@@ -27,7 +27,8 @@ let updateLRELP = async function() {
                 title: article.title.toString(),
                 publicationDate: new Date(article.pubDate).toISOString(),
                 description: article.description.toString(),
-                author: "Inconnu"
+                author: "Inconnu",
+                articleSource: "La Relève Et La Peste",
             });
         })
         console.log("RSS de La Relève Et La Peste récupéré. Sauvegarde...")
@@ -50,7 +51,8 @@ let updateNouveauJourJ = async function() {
                 title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
                 publicationDate: new Date(article.pubDate).toISOString(),
                 description: article.description.toString().replace(/[^\x00-\x7F]/g, ""),
-                author: article['author'] == undefined ? "Inconnu" : article['author'].toString()
+                author: article['author'] == undefined ? "Inconnu" : article['author'].toString(),
+                articleSource: "NouveauJourJ",
             });
         })
         console.log("RSS du NouveauJourJ récupéré. Sauvegarde...")
@@ -73,7 +75,8 @@ let updateLesJours = async function() {
                 title: article.title.toString(),
                 publicationDate: new Date(article.pubDate).toISOString(),
                 description: article.description.toString(),
-                author: "Inconnu"
+                author: "Inconnu",
+                articleSource: "LesJours",
             });
         })
         console.log("RSS du Les Jours récupéré. Sauvegarde...")

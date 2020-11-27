@@ -1,11 +1,30 @@
 [
 	{
+		"url": "https://lesjours.fr/obsessions/vie-jours/ep86-sdj-article-24/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
+		"imageUrl": null,
+		"title": "« Monsieur le Premier ministre, il y a urgence à sortir de cette spirale délétère »",
+		"publicationDate": "2020-11-27T12:23:00.000Z",
+		"description": "« Les Jours » et de nombreuses sociétés de journalistes demandent à Jean Castex le retrait de plusieurs articles de la loi « pour une sécurité globale ».",
+		"author": "Inconnu",
+		"articleSource": "LesJours"
+	},
+	{
+		"url": "https://lesjours.fr/obsessions/covid-deuxieme-vague/ep18-journal-de-reconfinement-castex/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
+		"imageUrl": null,
+		"title": "Castex, le ski et les embûches de Noël",
+		"publicationDate": "2020-11-26T16:16:00.000Z",
+		"description": "Journal de reconfinement. « Les Jours » continuent à rassembler les infos essentielles sur la crise sanitaire. En accès libre.",
+		"author": "Inconnu",
+		"articleSource": "LesJours"
+	},
+	{
 		"url": "https://lesjours.fr/obsessions/proces-sarkozy-ecoutes/ep2-pnf/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
 		"imageUrl": null,
 		"title": "Sarkozy et le parquet anticorruption : nerf de la guerre et guerre des nerfs",
 		"publicationDate": "2020-11-26T11:52:00.000Z",
 		"description": "Au procès Bismuth, l’ex-Président affronte son ennemi juré : le Parquet national financier. Une institution légitime mais pourfendue par ses proches.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/covid-deuxieme-vague/ep17-vaccins/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -13,7 +32,8 @@
 		"title": "Vaccins : questions pour une injection",
 		"publicationDate": "2020-11-25T16:59:00.000Z",
 		"description": "À virus inactivés, à protéines, à ARN au congélo… Les tueurs de Covid seront là dans un mois. « Les Jours » vous les présentent, au compte-gouttes.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/covid-deuxieme-vague/ep16-journal-reconfinement-macron/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -21,7 +41,8 @@
 		"title": "Redéconfinez-moi, mais pas tout de suite, pas trop vite…",
 		"publicationDate": "2020-11-24T21:00:00.000Z",
 		"description": "Journal de reconfinement spécial annonces présidentielles. Des dates, des vagues, des vaccins, des mouif et des slurp-slurp. En accès libre.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/police-racisme-banlieue/ep6-campement-republique/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -29,7 +50,8 @@
 		"title": "On a marché sur la République",
 		"publicationDate": "2020-11-24T18:03:00.000Z",
 		"description": "À Paris, des exilés violentés par des policiers, des journalistes molestés, un Darmanin faussement choqué, l’article 24 voté… Et quelles responsabilités ?",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/covid-deuxieme-vague/ep15-journal-de-reconfinement-semaine-5/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -37,7 +59,8 @@
 		"title": "Un mot interdit, deux alertes fourrure et trois vaccins",
 		"publicationDate": "2020-11-23T17:30:00.000Z",
 		"description": "Journal de reconfinement. « Les Jours » continuent à rassembler les infos essentielles sur la crise sanitaire. En accès libre.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/suv/ep16-convention-citoyenne-climat-finances/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -45,7 +68,8 @@
 		"title": "SUV : plus c’est gros, plus ça passe…",
 		"publicationDate": "2020-11-23T17:00:00.000Z",
 		"description": "L’Assemblée a tué dans l’œuf le malus pour les voitures les plus lourdes porté par la Convention citoyenne pour le climat. Marche arrière toute !",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/proces-sarkozy-ecoutes/ep1-sarkozy-ecoutes-corruption/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -53,7 +77,8 @@
 		"title": "Procès Sarkozy : Paul Bismuth à l’appareil…",
 		"publicationDate": "2020-11-22T17:00:00.000Z",
 		"description": "Enchâssée dans les affaires libyenne et Bettencourt, il y a celle des écoutes. Qui conduit pour la première fois Nicolas Sarkozy au tribunal ce lundi.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/face-a-face-b/ep70-kylie-minogue-andrea-true/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -61,7 +86,8 @@
 		"title": "Kylie Minogue et Andrea True, dancing queens",
 		"publicationDate": "2020-11-21T23:05:00.000Z",
 		"description": "Chaque semaine, « Les Jours » chroniquent une actualité et un disque en miroir. Aujourd’hui, fièvre disco.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/etats-unis-presidentielle-2020/ep32-trump-forcene/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -69,7 +95,8 @@
 		"title": "Trump, un forcené à la Maison-Blanche",
 		"publicationDate": "2020-11-21T17:00:00.000Z",
 		"description": "Alors que la certification des votes confirme l’élection de Joe Biden, le président poursuit sa croisade judiciaire et conspirationniste.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/vie-jours/ep85-tribune-manif/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -77,7 +104,8 @@
 		"title": "« Nous n’accréditerons pas nos journalistes pour couvrir les manifestations »",
 		"publicationDate": "2020-11-21T12:36:00.000Z",
 		"description": "« Les Jours » se joignent à l’appel de dizaines de rédactions s’élevant contre les dérives inquiétantes du pouvoir vis-à-vis de la liberté d’informer.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/alerte-secheresse/ep17-intimite-pouvoir/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -85,7 +113,8 @@
 		"title": "Gérald et la police, ce rêve bleu",
 		"publicationDate": "2020-11-20T23:05:00.000Z",
 		"description": "Tous les samedis, le dessinateur Loïc Sécheresse tire un trait sur l’actu. Aujourd’hui, le tonfa spécial journalistes.",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	},
 	{
 		"url": "https://lesjours.fr/obsessions/police-racisme-banlieue/ep5-loi-securite-globale-debats/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
@@ -93,14 +122,7 @@
 		"title": "Libertés : une semaine de flou furieux",
 		"publicationDate": "2020-11-20T19:22:00.000Z",
 		"description": "Après quatre jours de tensions démocratiques, l’article 24, qui limite la diffusion d’images des policiers, a été adopté ce vendredi soir.",
-		"author": "Inconnu"
-	},
-	{
-		"url": "https://lesjours.fr/obsessions/thales-surveillance/ep1-nice-safe-city/?utm_source=rss-feed&utm_medium=RSS&utm_campaign=rss-feed",
-		"imageUrl": null,
-		"title": "Nice, le « little brother » de Thales",
-		"publicationDate": "2020-11-19T16:56:00.000Z",
-		"description": "La ville de Christian Estrosi est le terrain de jeu de Thales en matière de surveillance, qui veut en faire sa première « Safe City ».",
-		"author": "Inconnu"
+		"author": "Inconnu",
+		"articleSource": "LesJours"
 	}
 ]
