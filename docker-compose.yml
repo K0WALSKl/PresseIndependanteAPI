@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  api:
+    image: node:8
+    container_name: api
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+    volumes:
+      - ./:/usr/src/app:rw,cached
+    working_dir: /usr/src/app
+    ports:
+      - 3000:3000
+    links:
+      - db
+    restart: always
+    command: bash -c "npm i && ./node_modules/.bin/nodemon --ignore 'news/*' ./bin/www"
+  db:
+    image: mongo:latest
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - 27017:27017
