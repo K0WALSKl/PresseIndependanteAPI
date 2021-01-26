@@ -1,4 +1,5 @@
 const xmlParser = require('xml2js').parseString;
+const got = require('got');
 const request = require('request');
 const fs = require('fs');
 const {Builder, By, Key, until} = require('selenium-webdriver');
@@ -17,39 +18,47 @@ let getJsonFromRSSFeed = async function(endpoint, callback) {
     });
 }
 
-
-let InjectArticleSourceFromName = function(articleSourceName) {
-    for (newspaper in globals.supportedWebsites.newspapers) {
-        if (newspaper.name === articleSourceName)
-            return newspaper
-    }
-    return undefined;
-}
+// async function asyncForEach(array, callback) {
+//     for (let index = 0; index < array.length; index++) {
+//         await callback(array[index], index, array);
+//     }
+// }
 
 let updateLRELP = async function() {
     console.log("Update de La Relève Et La Peste...");
     const endpoint = 'https://lareleveetlapeste.fr/feed';
-    let json = await getJsonFromRSSFeed(endpoint, function(res) {
+    let json = await getJsonFromRSSFeed(endpoint, async function(res) {
         let jsonArticles = [];
 
         if (res.rss == null)
             return
-        res.rss.channel[0].item.forEach(async article => {
+
+        // console.log(res.rss.channel[0].item[0]);
+
+
+
+        for (const article of res.rss.channel[0].item) {
+            pageRes = await got(article.link.toString())
+            elem = HTMLParser.parse(pageRes.body);
+            articleImgUrl = elem.querySelector('.attachment-post-thumbnail');
+            if (articleImgUrl != null)
+                articleImgUrl = articleImgUrl.getAttribute('data-lazy-src');
+
             jsonArticles.push({
                 url: article.link.toString(),
-                imageUrl: await get_article_image("La Relève Et La Peste", article.link),
+                imageUrl: articleImgUrl,
                 title: article.title.toString(),
                 publicationDate: new Date(article.pubDate).toISOString(),
-                description: article.description.toString(),
+                description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
                 author: "Inconnu",
                 articleSource: {
-                    name: 'LaReleveEtLaPeste',
+                    name: 'La Releve Et La Peste',
                     url: 'https://lareleveetlapeste.fr/',
                     // support_url: 'https://fr.tipeee.com/la-releve-et-la-peste',
                     imageUrl: 'https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg',
                 },
             });
-        })
+        }
         console.log("RSS de La Relève Et La Peste récupéré. Sauvegarde...")
         fs.unlinkSync('./news/LaReleveEtLaPeste.json');
         fs.writeFileSync('./news/LaReleveEtLaPeste.json', JSON.stringify(jsonArticles, null, '\t'));
@@ -60,27 +69,114 @@ let updateLRELP = async function() {
 let updateNouveauJourJ = async function() {
     console.log("Update du NouveauJourJ...");
     const endpoint = 'http://www.nouveaujourj.fr/?format=feed';
-    let json = await getJsonFromRSSFeed(endpoint, function(res) {
+    let json = await getJsonFromRSSFeed(endpoint, async function(res) {
         let jsonArticles = [];
+        let pageRes;
+        let elem;
+        let img_url;
 
-        if (res.rss == null)
+        if (res.rss == null) {
+            console.log("rss field == null")
             return
-        res.rss.channel[0].item.forEach(article => {
+        }
+
+        let i = 0;
+        for (const article of res.rss.channel[0].item) {
+            elem = HTMLParser.parse(article.description)
+            img_url = null;
+            if (elem.querySelector('img') != null) {
+                img_url = elem.querySelector('img').getAttribute('src')
+            } else {
+                pageRes = await got(article.link.toString())
+                elem = HTMLParser.parse(pageRes.body);
+                if (i === 0) {
+                    console.log(article.link)
+                    // console.log(pageRes)
+                    console.log('QuerySelectorAll img[4]');
+                    console.log(elem.querySelectorAll('img')[4]);
+                    console.log('itemPage');
+                    // console.log(elem.querySelector('.item-page'));
+                    console.log(elem.querySelector('.item-page').querySelector('img'));
+                }
+                i++;
+                if (elem.querySelector('.item-page') != null && elem.querySelector('img') != null) {
+                    img_url = elem.querySelector('.item-page').querySelector('img')
+                    if (img_url)
+                        img_url = img_url.getAttribute('src');
+                    else
+                        img_url = null;
+                }
+                else
+                    img_url = 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg'
+            }
             jsonArticles.push({
                 url: article.link.toString(),
-                imageUrl: 'https://lenergeek.com/wp-content/uploads/2019/07/eolienne-haliade-general-electric.jpeg',
+                imageUrl: img_url == null ? 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg' : img_url,
                 title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
                 publicationDate: new Date(article.pubDate).toISOString(),
-                description: article.description.toString().replace(/[^\x00-\x7F]/g, ""),
+                description: elem.querySelectorAll('p')[elem.querySelectorAll('p').length - 1].innerHTML,
                 author: article['author'] == undefined ? "Inconnu" : article['author'].toString(),
                 articleSource: {
                     name: 'NouveauJourJ',
                     url: 'http://www.nouveaujourj.fr/',
                     // support_url: 'http://www.nouveaujourj.fr/',
-                    imageUrl: 'https://static.fnac-static.com/multimedia/Images/FR/NR/dd/78/6e/7239901/1540-1/tsp20150910164533/La-Releve-et-la-Peste.jpg',
+                    imageUrl: 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg',
                 },
             });
-        })
+        }
+
+        // for (let i = 0; i <= res.rss.channel[0].item.length; i++) {
+        //     elem = HTMLParser.parse(res.rss.channel[0].item[i].description)
+        //     img_url = null;
+        //     if (elem.querySelector('img') != null) {
+        //         img_url = elem.querySelector('img').getAttribute('src')
+        //     } else {
+        //         console.log(res.rss.channel[0].item[i].link.toString());
+        //         pageRes = await request.get(res.rss.channel[0].item[i].link.toString());
+        //         console.log(pageRes.body);
+        //         img_url = 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg'
+        //     }
+        //     jsonArticles.push({
+        //         url: res.rss.channel[0].item[i].link.toString(),
+        //         imageUrl: img_url == null ? 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg' : img_url,
+        //         title: res.rss.channel[0].item[i].title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+        //         publicationDate: new Date(res.rss.channel[0].item[i].pubDate).toISOString(),
+        //         description: elem.querySelectorAll('p')[elem.querySelectorAll('p').length - 1].innerHTML,
+        //         author: res.rss.channel[0].item[i]['author'] == undefined ? "Inconnu" : res.rss.channel[0].item[i]['author'].toString(),
+        //         articleSource: {
+        //             name: 'NouveauJourJ',
+        //             url: 'http://www.nouveaujourj.fr/',
+        //             // support_url: 'http://www.nouveaujourj.fr/',
+        //             imageUrl: 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg',
+        //         },
+        //     });
+        // }
+        //
+        //
+        // res.rss.channel[0].item.map(article => {
+        //     elem = HTMLParser.parse(article.description)
+        //     img_url = null;
+        //     if (elem.querySelector('img') != null) {
+        //         img_url = elem.querySelector('img').getAttribute('src')
+        //     } else {
+        //         img_url = 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg'
+        //     }
+        //     jsonArticles.push({
+        //         url: article.link.toString(),
+        //         imageUrl: img_url == null ? 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg' : img_url,
+        //         title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+        //         publicationDate: new Date(article.pubDate).toISOString(),
+        //         description: elem.querySelectorAll('p')[elem.querySelectorAll('p').length - 1].innerHTML,
+        //         author: article['author'] == undefined ? "Inconnu" : article['author'].toString(),
+        //         articleSource: {
+        //             name: 'NouveauJourJ',
+        //             url: 'http://www.nouveaujourj.fr/',
+        //             // support_url: 'http://www.nouveaujourj.fr/',
+        //             imageUrl: 'https://api.tipeee.com/cache/20200608141825/media/1200/630/zoom/1068263/202006085ede2c920dd3b.jpeg',
+        //         },
+        //     });
+        // }
+        // )
         console.log("RSS du NouveauJourJ récupéré. Sauvegarde...")
         fs.unlinkSync('./news/NouveauJourJ.json');
         fs.writeFileSync('./news/NouveauJourJ.json', JSON.stringify(jsonArticles, null, '\t'));
@@ -190,11 +286,11 @@ let updateEcoBretons = async function() {
 // En abs du fichier car je ne sais pas comment est géré l'appel des fonctions qui sont définis après (genre en C)
 let updateNews = async function() {
     const updateNewsfunctions = [
-        updateLRELP,
-        updateNouveauJourJ,
-        updateLesJours,
-        updateReporterre,
-        updateEcoBretons,
+        updateLRELP, // OK
+        // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
+        updateLesJours, // OK
+        updateReporterre, // OK
+        updateEcoBretons, // OK
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
