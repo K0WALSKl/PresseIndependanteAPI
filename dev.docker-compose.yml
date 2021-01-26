@@ -10,15 +10,13 @@ services:
       MONGO_DATABASE: ${MONGO_DATABASE}
     volumes:
       - ./:/usr/src/app:rw,cached
-      - ./news:/usr/src/app:rw
     working_dir: /usr/src/app
-    user: ${CURRENT_UID}
     ports:
       - 3000:3000
     links:
       - db
     restart: always
-    command: bash -c "npm i && npm start"
+    command: bash -c "npm i && ./node_modules/.bin/nodemon --ignore 'news/*' ./bin/www"
 #  db:
 #    image: mongo:latest
 #    container_name: db
