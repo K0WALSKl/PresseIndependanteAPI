@@ -15,8 +15,6 @@ services:
     user: ${CURRENT_UID}
     ports:
       - 3000:3000
-    links:
-      - db
     restart: always
     command: bash -c "npm i && npm start"
 #  db:
