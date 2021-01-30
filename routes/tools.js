@@ -201,7 +201,7 @@ let updateLesJours = async function() {
                 publicationDate: new Date(article.pubDate).toISOString(),
                 author: "Inconnu",
                 articleSource: {
-                    name: 'LesJours',
+                    name: 'Les Jours',
                     url: 'https://lesjours.fr/',
                     // support_url: 'https://lesjours.fr/abonnement/jouriste',
                     imageUrl: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4c/Les_Jours.svg/1280px-Les_Jours.svg.png',
