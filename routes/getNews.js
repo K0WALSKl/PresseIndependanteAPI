@@ -36,7 +36,7 @@ const globals = require('../globals');
 /* GET news listing. */
 router.get('/', function(req, res) {
     // Liste du nom des journaux (chaque nom correspond à un fichier json dans /news/<journal>.json)
-    tools.updateNews();
+    // tools.updateNews();
 
     // let url = tools.get_article_image("La Relève Et la Peste", "https://lareleveetlapeste.fr/railcoop-veut-relancer-les-trains-de-nuit-et-les-lignes-abandonnees/");
     // console.log(url);

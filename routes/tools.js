@@ -226,9 +226,10 @@ let updateReporterre = async function() {
             return
         res.rss.channel[0].item.forEach(article => {
             elem = HTMLParser.parse(article.description)
+            img_url = (elem.querySelector('img') == null ? null : elem.querySelector('img').getAttribute('src'));
             jsonArticles.push({
                 url: article.link.toString(),
-                imageUrl: elem.querySelector('img').getAttribute('src'),
+                imageUrl: img_url,
                 title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
                 publicationDate: new Date(article['dc:date']).toISOString(),
                 description: elem.querySelector('p').text,
