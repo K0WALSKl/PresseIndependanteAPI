@@ -69,7 +69,7 @@ function dateCompareInArticle(article_a, article_b) {
 }
 
 router.get('/sortedByDate', function(req, res) {
-    tools.updateNews();
+    // tools.updateNews();
 
     let all_news = {
         data: []
