@@ -30,5 +30,10 @@ module.exports.supportedWebsites = {
             // support_url: 'http://www.nouveaujourj.fr/',
             imageUrl: 'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png',
         },
+        {
+            name: 'Fakir',
+            url: 'https://www.fakirpresse.info/',
+            imageUrl: 'https://www.fakirpresse.info/squelettes/css/img/logo.png',
+        },
     ]
 }

@@ -33,10 +33,6 @@ let updateLRELP = async function() {
         if (res.rss == null)
             return
 
-        // console.log(res.rss.channel[0].item[0]);
-
-
-
         for (const article of res.rss.channel[0].item) {
             pageRes = await got(article.link.toString())
             elem = HTMLParser.parse(pageRes.body);
@@ -282,16 +278,79 @@ let updateEcoBretons = async function() {
     });
 }
 
+let updateFakir = async function() {
+    console.log("Update de Fakir...");
+    const endpoint = 'https://www.fakirpresse.info/spip.php?page=backend';
 
+    function getArticleImageUrl(elem) {
+        let articleImgUrl = elem.querySelector('.article');
+        if (articleImgUrl != null) {
+            articleImgUrl = articleImgUrl.querySelectorAll('img');
+            if (articleImgUrl != null) {
+                articleImgUrl = articleImgUrl[0].getAttribute('src');
+            }
+        }
+        return articleImgUrl;
+    }
+
+    function getArticleAuthor(elem) {
+        let authors = elem.querySelectorAll('.vcard');
+
+        if (authors != null) {
+            for (let i = 0; i < authors.length; i++) {
+                authors[i] = authors[i].querySelector('a').innerHTML;
+            }
+            authors = authors.join(', ');
+        }
+        return authors;
+    }
+
+
+    let json = await getJsonFromRSSFeed(endpoint, async function(res) {
+        let jsonArticles = [];
+        let elem;
+        let pageRes;
+        let articleImgUrl;
+        let author;
+
+        if (res.rss == null)
+            return
+        for (const article of res.rss.channel[0].item) {
+            pageRes = await got(article.link.toString())
+            elem = HTMLParser.parse(pageRes.body);
+            articleImgUrl = getArticleImageUrl(elem);
+            author = getArticleAuthor(elem);
+
+            jsonArticles.push({
+                url: article.link.toString(),
+                imageUrl: articleImgUrl == null ? null : 'https://www.fakirpresse.info/' + articleImgUrl,
+                title: article.title.toString(),
+                publicationDate: new Date(article['dc:date']).toISOString(),
+                description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
+                author: author == null ? 'Inconnu' : author,
+                articleSource: {
+                    name: 'Fakir',
+                    url: 'https://www.fakirpresse.info/',
+                    imageUrl: 'https://www.fakirpresse.info/squelettes/css/img/logo.png',
+                },
+            });
+        }
+        console.log("RSS de Fakir récupéré. Sauvegarde...")
+        fs.unlinkSync('./news/Fakir.json');
+        fs.writeFileSync('./news/Fakir.json', JSON.stringify(jsonArticles, null, '\t'));
+        console.log("Fakir Sauvegardé");
+    });
+}
 
 // En abs du fichier car je ne sais pas comment est géré l'appel des fonctions qui sont définis après (genre en C)
 let updateNews = async function() {
     const updateNewsfunctions = [
-        updateLRELP, // OK
+        // updateLRELP, // OK
         // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
-        updateLesJours, // OK
-        updateReporterre, // OK
-        updateEcoBretons, // OK
+        // updateLesJours, // OK
+        // updateReporterre, // OK
+        // updateEcoBretons, // OK
+        updateFakir, // OK
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
