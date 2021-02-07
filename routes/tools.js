@@ -18,17 +18,21 @@ let getJsonFromRSSFeed = async function(endpoint, callback) {
     });
 }
 
-// async function asyncForEach(array, callback) {
-//     for (let index = 0; index < array.length; index++) {
-//         await callback(array[index], index, array);
-//     }
-// }
-
 let updateLRELP = async function() {
     console.log("Update de La Relève Et La Peste...");
     const endpoint = 'https://lareleveetlapeste.fr/feed';
+
+    function getArticleAuthor(elem) {
+        let authors = elem.querySelector('.display-block.position-relative.font--l.letterspacing-m.c-black.fontsize-xs.breakpoint-m--fontsize-xxs.lineheight-1.width-100.textalign-center');
+        if (authors == null)
+            return undefined;
+        authors = authors.innerHTML.split("- ")[1].replace(/\t/g, '');
+        return authors === "" || authors === null ? undefined : authors;
+    }
+
     let json = await getJsonFromRSSFeed(endpoint, async function(res) {
         let jsonArticles = [];
+        let author;
 
         if (res.rss == null)
             return
@@ -36,6 +40,7 @@ let updateLRELP = async function() {
         for (const article of res.rss.channel[0].item) {
             pageRes = await got(article.link.toString())
             elem = HTMLParser.parse(pageRes.body);
+            author = getArticleAuthor(elem);
             articleImgUrl = elem.querySelector('.attachment-post-thumbnail');
             if (articleImgUrl != null)
                 articleImgUrl = articleImgUrl.getAttribute('data-lazy-src');
@@ -46,7 +51,7 @@ let updateLRELP = async function() {
                 title: article.title.toString(),
                 publicationDate: new Date(article.pubDate).toISOString(),
                 description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
-                author: "Inconnu",
+                author: author,
                 articleSource: {
                     name: 'La Releve Et La Peste',
                     url: 'https://lareleveetlapeste.fr/',
@@ -214,14 +219,36 @@ let updateLesJours = async function() {
 let updateReporterre = async function() {
     console.log("Update de Reporterre...");
     const endpoint = 'https://reporterre.net/spip.php?page=backend-simple';
-    let json = await getJsonFromRSSFeed(endpoint, function(res) {
+
+    function getArticleAuthor(elem) {
+        let authors = elem.querySelectorAll('.lienauteur');
+        if (authors != null) {
+            for (let i = 0; i < authors.length; i++) {
+                authors[i] = authors[i].innerHTML.replace("&#8217;", "'");
+            }
+            authors = authors.join(', ');
+        }
+        return authors === "" || authors === [] ? undefined : authors;
+    }
+
+    let json = await getJsonFromRSSFeed(endpoint, async function(res) {
         let jsonArticles = [];
+        let author;
         let elem;
 
         if (res.rss == null)
             return
-        res.rss.channel[0].item.forEach(article => {
-            elem = HTMLParser.parse(article.description)
+        for (let i = 0; i < res.rss.channel[0].item.length; i++) {
+            let article = res.rss.channel[0].item[i];
+            let author = article['dc:creator'];
+            if (author == undefined) {
+                let bodyPageRes = await got(article.link.toString());
+                let elemPageRes = HTMLParser.parse(bodyPageRes.body);
+                author = getArticleAuthor(elemPageRes);
+                author = author == undefined ? 'Inconnu' : author;
+                console.log('Finally : ' + author)
+            }
+            elem = HTMLParser.parse(article.description);
             img_url = (elem.querySelector('img') == null ? null : elem.querySelector('img').getAttribute('src'));
             jsonArticles.push({
                 url: article.link.toString(),
@@ -229,7 +256,7 @@ let updateReporterre = async function() {
                 title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
                 publicationDate: new Date(article['dc:date']).toISOString(),
                 description: elem.querySelector('p').text,
-                author: article['dc:creator'] == undefined ? "Inconnu" : article['dc:creator'].toString(),
+                author: author.toString(),
                 articleSource: {
                     name: 'Reporterre',
                     url: 'https://reporterre.net/',
@@ -237,7 +264,7 @@ let updateReporterre = async function() {
                     imageUrl: 'https://reporterre.net/IMG/siteon0.png?1588262321',
                 },
             });
-        })
+        }
         console.log("RSS de Reporterre récupéré. Sauvegarde...")
         fs.unlinkSync('./news/Reporterre.json');
         fs.writeFileSync('./news/Reporterre.json', JSON.stringify(jsonArticles, null, '\t'));
@@ -342,6 +369,63 @@ let updateFakir = async function() {
     });
 }
 
+let updatePolitis = async function() {
+    console.log("Update de Politis...");
+    const endpoint = 'https://www.politis.fr/rss.xml';
+
+    function getArticleAuthor(elem) {
+        let authors = elem.querySelector('.display-block.position-relative.font--l.letterspacing-m.c-black.fontsize-xs.breakpoint-m--fontsize-xxs.lineheight-1.width-100.textalign-center');
+        if (authors == null)
+            return undefined;
+        authors = authors.innerHTML.split("- ")[1].replace(/\t/g, '');
+        return authors === "" || authors === null ? undefined : authors;
+    }
+
+    function getArticleImageUrl(elem) {
+        let articleImgUrl = elem.querySelector('.hidden');
+        if (articleImgUrl != null) {
+            articleImgUrl = articleImgUrl.getAttribute('src');
+        }
+        console.log(": ");
+        console.log(": " + articleImgUrl);
+        return articleImgUrl;
+    }
+
+    let json = await getJsonFromRSSFeed(endpoint, async function(res) {
+        let jsonArticles = [];
+        let author;
+
+        if (res.rss == null)
+            return
+
+        for (const article of res.rss.channel[0].item) {
+            pageRes = await got(article.link.toString())
+            elem = HTMLParser.parse(pageRes.body);
+            // author = getArticleAuthor(elem);
+            articleImgUrl = getArticleImageUrl(elem);
+
+            jsonArticles.push({
+                url: article.link.toString(),
+                imageUrl: articleImgUrl,
+                title: article.title.toString(),
+                publicationDate: new Date(article.pubDate).toISOString(),
+                description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
+                author: article.author,
+                articleSource: {
+                    name: 'Politis',
+                    url: 'https://www.politis.fr/',
+                    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
+                },
+            });
+        }
+        console.log("RSS de Politis récupéré. Sauvegarde...")
+        fs.unlinkSync('./news/Politis.json');
+        fs.writeFileSync('./news/Politis.json', JSON.stringify(jsonArticles, null, '\t'));
+        console.log("Politis Sauvegardé");
+    });
+}
+
+
 // En abs du fichier car je ne sais pas comment est géré l'appel des fonctions qui sont définis après (genre en C)
 let updateNews = async function() {
     const updateNewsfunctions = [
@@ -350,7 +434,8 @@ let updateNews = async function() {
         // updateLesJours, // OK
         // updateReporterre, // OK
         // updateEcoBretons, // OK
-        updateFakir, // OK
+        // updateFakir, // OK
+        updatePolitis,
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
@@ -360,41 +445,6 @@ let updateNews = async function() {
     }
 }
 
-let get_article_image = async function (sourceName, article_url) {
-    let image_link;
-    let xpath = undefined;
-
-    console.log(sourceName)
-    // if (sourceName.toString() == "La Relève Et La Peste")
-        xpath = "/html/body/div[2]/div/div/div/section[2]/div/div/div[1]/img";
-
-    if (xpath === undefined){
-        console.log("Nope")
-        return ""
-    }
-    let driver = new Builder()
-        .forBrowser('firefox')
-        .setFirefoxOptions(new firefox.Options().headless())
-        .usingServer('http://52.169.120.202:4444/wd/hub')
-        .build();
-
-    try {
-        // console.log("link " + article_url)
-        await driver.get(article_url);
-        image_link = await driver.findElement(By.xpath(xpath)).getAttribute("src");
-        console.log("in : " + image_link)
-    } finally {
-        await driver.quit();
-    }
-
-    return image_link;
-}
-
 module.exports = {
-    getJsonFromRSSFeed : getJsonFromRSSFeed,
     updateNews : updateNews,
-    updateLRELP: updateLRELP,
-    updateReporterre: updateReporterre,
-    updateEcoBretons: updateEcoBretons,
-    get_article_image: get_article_image,
 };

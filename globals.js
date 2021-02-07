@@ -35,5 +35,10 @@ module.exports.supportedWebsites = {
             url: 'https://www.fakirpresse.info/',
             imageUrl: 'https://www.fakirpresse.info/squelettes/css/img/logo.png',
         },
+        {
+            name: 'Politis',
+            url: 'https://www.politis.fr/',
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
+        },
     ]
 }
