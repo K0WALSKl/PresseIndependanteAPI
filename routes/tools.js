@@ -374,10 +374,18 @@ let updatePolitis = async function() {
     const endpoint = 'https://www.politis.fr/rss.xml';
 
     function getArticleAuthor(elem) {
-        let authors = elem.querySelector('.display-block.position-relative.font--l.letterspacing-m.c-black.fontsize-xs.breakpoint-m--fontsize-xxs.lineheight-1.width-100.textalign-center');
+        let authors = elem.querySelector('.article-author-sign');
         if (authors == null)
             return undefined;
-        authors = authors.innerHTML.split("- ")[1].replace(/\t/g, '');
+        authors = elem.querySelector('h5').querySelectorAll('span')
+        if (authors != null) {
+            for (let i = 0; i < authors.length; i++) {
+                authors[i] = authors[i].querySelector('a').innerHTML;
+            }
+            authors = authors.join(', ');
+            console.log(authors);
+        }
+        console.log(authors);
         return authors === "" || authors === null ? undefined : authors;
     }
 
@@ -386,8 +394,8 @@ let updatePolitis = async function() {
         if (articleImgUrl != null) {
             articleImgUrl = articleImgUrl.getAttribute('src');
         }
-        console.log(": ");
-        console.log(": " + articleImgUrl);
+        // console.log(": ");
+        // console.log(": " + articleImgUrl);
         return articleImgUrl;
     }
 
@@ -399,24 +407,27 @@ let updatePolitis = async function() {
             return
 
         for (const article of res.rss.channel[0].item) {
-            pageRes = await got(article.link.toString())
-            elem = HTMLParser.parse(pageRes.body);
-            // author = getArticleAuthor(elem);
-            articleImgUrl = getArticleImageUrl(elem);
+            if (!article.title.toString().includes('[Blog]')) {
+                pageRes = await got(article.link.toString())
+                console.log(article.link.toString());
+                elem = HTMLParser.parse(pageRes.body);
+                author = getArticleAuthor(elem);
+                articleImgUrl = getArticleImageUrl(elem);
 
-            jsonArticles.push({
-                url: article.link.toString(),
-                imageUrl: articleImgUrl,
-                title: article.title.toString(),
-                publicationDate: new Date(article.pubDate).toISOString(),
-                description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
-                author: article.author,
-                articleSource: {
-                    name: 'Politis',
-                    url: 'https://www.politis.fr/',
-                    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
-                },
-            });
+                jsonArticles.push({
+                    url: article.link.toString(),
+                    imageUrl: articleImgUrl,
+                    title: article.title.toString(),
+                    publicationDate: new Date(article.pubDate).toISOString(),
+                    description: article.description ? article.description.toString().replace(/(<([^>]+)>)/gi, "") : '',
+                    author: author === undefined ? 'Inconnu' : author,
+                    articleSource: {
+                        name: 'Politis',
+                        url: 'https://www.politis.fr/',
+                        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
+                    },
+                });
+            }
         }
         console.log("RSS de Politis récupéré. Sauvegarde...")
         fs.unlinkSync('./news/Politis.json');
@@ -429,13 +440,13 @@ let updatePolitis = async function() {
 // En abs du fichier car je ne sais pas comment est géré l'appel des fonctions qui sont définis après (genre en C)
 let updateNews = async function() {
     const updateNewsfunctions = [
-        // updateLRELP, // OK
+        updateLRELP, // OK
         // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
-        // updateLesJours, // OK
-        // updateReporterre, // OK
-        // updateEcoBretons, // OK
-        // updateFakir, // OK
-        updatePolitis,
+        updateLesJours, // OK
+        updateReporterre, // OK
+        updateEcoBretons, // OK
+        updateFakir, // OK
+        updatePolitis, // OK
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
