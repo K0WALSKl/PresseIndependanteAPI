@@ -15,6 +15,7 @@
     "morgan": "~1.9.1",
     "node-cron": "^2.0.3",
     "node-html-parser": "^2.0.0",
+    "pug": "^3.0.2",
     "request": "^2.88.2",
     "selenium-webdriver": "^4.0.0-alpha.7",
     "xml2js": "^0.4.23"

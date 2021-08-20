@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   api:
-    image: node:8
+    image: node:latest
     container_name: api
     environment:
       MONGO_USERNAME: ${MONGO_USERNAME}

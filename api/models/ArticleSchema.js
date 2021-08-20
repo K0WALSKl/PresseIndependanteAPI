@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
 var ArticleSchema = new Schema({
     url: String,
     imageUrl: String,
@@ -15,15 +16,18 @@ var ArticleSchema = new Schema({
     },
 });
 
-ArticleSchema.methods.addTicket = function(user_id, date_takeoff, massage, no_gravity_meal, no_gravity_pool) {
+ArticleSchema.methods.addArticle = function (url, imageUrl, title, publicationDate, description, author, articleSourceName, articleSourceUrl, articleSourceImageUrl) {
     console.log("Début Add Ticket");
-    this.id_user = user_id;
-    this.date_takeoff = date_takeoff;
-    this.date_creation = new Date();
-    this.massage = massage;
-    this.no_gravity_meal = no_gravity_meal;
-    this.no_gravity_pool = no_gravity_pool;
-    console.log("Fin Add Ticket");
+    this.url = url;
+    this.imageUrl = imageUrl;
+    this.title = title;
+    this.publicationDate = publicationDate;
+    this.description = description;
+    this.author = author;
+    this.articleSource.name = articleSourceName;
+    this.articleSource.url = articleSourceUrl;
+    this.articleSource.imageUrl = articleSourceImageUrl;
+    console.log("Fin Add Article");
 }
 
 var Article = module.exports = mongoose.model('Articles', ArticleSchema);

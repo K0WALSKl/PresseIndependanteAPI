@@ -6,6 +6,7 @@ const {Builder, By, Key, until} = require('selenium-webdriver');
 const firefox = require('selenium-webdriver/firefox');
 const globals = require('../globals');
 const HTMLParser = require('node-html-parser');
+const mongoDataHandler = require('../api/mongoDataHandler')
 
 let getJsonFromRSSFeed = async function(endpoint, callback) {
     request(endpoint, (err, res, body) => {
@@ -59,10 +60,16 @@ let updateLRELP = async function() {
                     imageUrl: 'https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg',
                 },
             });
+            mongoDataHandler.mongoAddArticle(article.link.toString(), articleImgUrl, article.title.toString(),
+                new Date(article.pubDate).toISOString(),
+                article.description.toString().replace(/(<([^>]+)>)/gi, ""), author,
+                'La Releve Et La Peste', 'https://lareleveetlapeste.fr/',
+                'https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg');
         }
-        console.log("RSS de La Relève Et La Peste récupéré. Sauvegarde...")
-        fs.unlinkSync('./news/LaReleveEtLaPeste.json');
-        fs.writeFileSync('./news/LaReleveEtLaPeste.json', JSON.stringify(jsonArticles, null, '\t'));
+
+        // console.log("RSS de La Relève Et La Peste récupéré. Sauvegarde...")
+        // fs.unlinkSync('./news/LaReleveEtLaPeste.json');
+        // fs.writeFileSync('./news/LaReleveEtLaPeste.json', JSON.stringify(jsonArticles, null, '\t'));
         console.log("La Relève Et La Peste Sauvegardé");
     });
 }
@@ -442,11 +449,11 @@ let updateNews = async function() {
     const updateNewsfunctions = [
         updateLRELP, // OK
         // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
-        updateLesJours, // OK
-        updateReporterre, // OK
-        updateEcoBretons, // OK
-        updateFakir, // OK
-        updatePolitis, // OK
+        // updateLesJours, // OK
+        // updateReporterre, // OK
+        // updateEcoBretons, // OK
+        // updateFakir, // OK
+        // updatePolitis, // OK
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
