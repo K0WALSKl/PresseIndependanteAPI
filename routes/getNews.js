@@ -3,6 +3,7 @@ var router = express.Router();
 const tools = require('./tools');
 const fs = require('fs');
 const globals = require('../globals');
+const mongoDataHandler = require('../api/mongoDataHandler');
 
 // const newspapers = ["LaReleveEtLaPeste", "NouveauJourJ", "LesJours"];
 // const newspapersLinks = ["https://lareleveetlapeste.fr/", "http://www.nouveaujourj.fr/", "https://lesjours.fr/"];
@@ -78,20 +79,16 @@ router.get('/sortedByDate', function(req, res) {
         data: []
     }
 
-    for (let i = 0; i < globals.supportedWebsites.newspapers.length; i++) {
-        let file = fs.readFileSync("./news/" + globals.supportedWebsites.newspapers[i].name + ".json", 'utf-8');
-        all_news.data.push({
-            "articles": JSON.parse(file),
-        })
-    }
-    for (let i = 0; i < all_news.data.length; i++) {
-        for (let j = 0; j < all_news.data[i].articles.length; j++) {
-            sorted_news.data.push(all_news.data[i].articles[j])
-        }
-    }
-    sorted_news.data.sort(dateCompareInArticle)
-    res.contentType('application/json');
-    res.json(sorted_news);
+    mongoDataHandler.mongoGetArticles(function(articles) {
+        console.log("De l'autre coté : " + articles[0])
+        for (let i = 0; i < articles.length; i++)
+            sorted_news.data.push(articles[i])
+
+        sorted_news.data.sort(dateCompareInArticle)
+
+        res.contentType('application/json');
+        res.json(sorted_news);
+    });
 });
 
 module.exports = router;

@@ -2,8 +2,8 @@ const xmlParser = require('xml2js').parseString;
 const got = require('got');
 const request = require('request');
 const fs = require('fs');
-const {Builder, By, Key, until} = require('selenium-webdriver');
-const firefox = require('selenium-webdriver/firefox');
+// const {Builder, By, Key, until} = require('selenium-webdriver');
+// const firefox = require('selenium-webdriver/firefox');
 const globals = require('../globals');
 const HTMLParser = require('node-html-parser');
 const mongoDataHandler = require('../api/mongoDataHandler')
@@ -46,20 +46,20 @@ let updateLRELP = async function() {
             if (articleImgUrl != null)
                 articleImgUrl = articleImgUrl.getAttribute('data-lazy-src');
 
-            jsonArticles.push({
-                url: article.link.toString(),
-                imageUrl: articleImgUrl,
-                title: article.title.toString(),
-                publicationDate: new Date(article.pubDate).toISOString(),
-                description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
-                author: author,
-                articleSource: {
-                    name: 'La Releve Et La Peste',
-                    url: 'https://lareleveetlapeste.fr/',
-                    // support_url: 'https://fr.tipeee.com/la-releve-et-la-peste',
-                    imageUrl: 'https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg',
-                },
-            });
+            // jsonArticles.push({
+            //     url: article.link.toString(),
+            //     imageUrl: articleImgUrl,
+            //     title: article.title.toString(),
+            //     publicationDate: new Date(article.pubDate).toISOString(),
+            //     description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
+            //     author: author,
+            //     articleSource: {
+            //         name: 'La Releve Et La Peste',
+            //         url: 'https://lareleveetlapeste.fr/',
+            //         // support_url: 'https://fr.tipeee.com/la-releve-et-la-peste',
+            //         imageUrl: 'https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg',
+            //     },
+            // });
             mongoDataHandler.mongoAddArticle(article.link.toString(), articleImgUrl, article.title.toString(),
                 new Date(article.pubDate).toISOString(),
                 article.description.toString().replace(/(<([^>]+)>)/gi, ""), author,
@@ -257,24 +257,30 @@ let updateReporterre = async function() {
             }
             elem = HTMLParser.parse(article.description);
             img_url = (elem.querySelector('img') == null ? null : elem.querySelector('img').getAttribute('src'));
-            jsonArticles.push({
-                url: article.link.toString(),
-                imageUrl: img_url,
-                title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
-                publicationDate: new Date(article['dc:date']).toISOString(),
-                description: elem.querySelector('p').text,
-                author: author.toString(),
-                articleSource: {
-                    name: 'Reporterre',
-                    url: 'https://reporterre.net/',
-                    // support_url: 'http://www.nouveaujourj.fr/',
-                    imageUrl: 'https://reporterre.net/IMG/siteon0.png?1588262321',
-                },
-            });
+            // jsonArticles.push({
+            //     url: article.link.toString(),
+            //     imageUrl: img_url,
+            //     title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+            //     publicationDate: new Date(article['dc:date']).toISOString(),
+            //     description: elem.querySelector('p').text,
+            //     author: author.toString(),
+            //     articleSource: {
+            //         name: 'Reporterre',
+            //         url: 'https://reporterre.net/',
+            //         // support_url: 'http://www.nouveaujourj.fr/',
+            //         imageUrl: 'https://reporterre.net/IMG/siteon0.png?1588262321',
+            //     },
+            // });
+            mongoDataHandler.mongoAddArticle(article.link.toString(), img_url,
+                article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+                new Date(article['dc:date']).toISOString(),
+                elem.querySelector('p').text, author.toString(),
+                'Reporterre', 'https://reporterre.net/',
+                'https://reporterre.net/IMG/siteon0.png?1588262321');
         }
-        console.log("RSS de Reporterre récupéré. Sauvegarde...")
-        fs.unlinkSync('./news/Reporterre.json');
-        fs.writeFileSync('./news/Reporterre.json', JSON.stringify(jsonArticles, null, '\t'));
+        // console.log("RSS de Reporterre récupéré. Sauvegarde...")
+        // fs.unlinkSync('./news/Reporterre.json');
+        // fs.writeFileSync('./news/Reporterre.json', JSON.stringify(jsonArticles, null, '\t'));
         console.log("Reporterre Sauvegardé");
     });
 }
@@ -290,24 +296,39 @@ let updateEcoBretons = async function() {
             return
         res.rss.channel[0].item.forEach(article => {
             elem = HTMLParser.parse(article.description)
-            jsonArticles.push({
-                url: article.link.toString(),
-                imageUrl: (elem.querySelector('img') == null) ? 'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png' : elem.querySelector('img').getAttribute('src'),
-                title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
-                publicationDate: new Date(article['pubDate']).toISOString(),
-                description: elem.querySelector('p').text,
-                author: article['dc:creator'] == undefined ? "Inconnu" : article['dc:creator'].toString(),
-                articleSource: {
-                    name: 'Eco-Bretons',
-                    url: 'https://www.eco-bretons.info/',
-                    // support_url: 'http://www.nouveaujourj.fr/',
-                    imageUrl: 'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png',
-                },
-            });
+            // jsonArticles.push({
+            //     url: article.link.toString(),
+            //     imageUrl: (elem.querySelector('img') == null) ? 'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png' : elem.querySelector('img').getAttribute('src'),
+            //     title: article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+            //     publicationDate: new Date(article['pubDate']).toISOString(),
+            //     description: elem.querySelector('p').text,
+            //     author: article['dc:creator'] == undefined ? "Inconnu" : article['dc:creator'].toString(),
+            //     articleSource: {
+            //         name: 'Eco-Bretons',
+            //         url: 'https://www.eco-bretons.info/',
+            //         // support_url: 'http://www.nouveaujourj.fr/',
+            //         imageUrl: 'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png',
+            //     },
+            // });
+
+            mongoDataHandler.mongoAddArticle(
+                article.link.toString(),
+                (elem.querySelector('img') == null) ?
+                    'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png' :
+                    elem.querySelector('img').getAttribute('src'),
+                article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+                new Date(article['pubDate']).toISOString(),
+                article.description.toString().replace(/(<([^>]+)>)/gi, ""),
+                article['dc:creator'] == undefined ? "Inconnu" : article['dc:creator'].toString(),
+                'Eco-Bretons',
+                'https://www.eco-bretons.info/',
+                'https://www.eco-bretons.info/wp-content/uploads/2019/07/logo-non-transparent.png'
+            );
+
         })
-        console.log("RSS de EcoBretons récupéré. Sauvegarde...")
-        fs.unlinkSync('./news/Eco-Bretons.json');
-        fs.writeFileSync('./news/Eco-Bretons.json', JSON.stringify(jsonArticles, null, '\t'));
+        // console.log("RSS de EcoBretons récupéré. Sauvegarde...")
+        // fs.unlinkSync('./news/Eco-Bretons.json');
+        // fs.writeFileSync('./news/Eco-Bretons.json', JSON.stringify(jsonArticles, null, '\t'));
         console.log("EcoBretons Sauvegardé");
     });
 }
@@ -320,8 +341,12 @@ let updateFakir = async function() {
         let articleImgUrl = elem.querySelector('.article');
         if (articleImgUrl != null) {
             articleImgUrl = articleImgUrl.querySelectorAll('img');
-            if (articleImgUrl != null) {
+            console.log('>>>')
+            console.log(articleImgUrl.length)
+            if (articleImgUrl.length !== 0) {
                 articleImgUrl = articleImgUrl[0].getAttribute('src');
+            } else {
+                return null
             }
         }
         return articleImgUrl;
@@ -355,23 +380,35 @@ let updateFakir = async function() {
             articleImgUrl = getArticleImageUrl(elem);
             author = getArticleAuthor(elem);
 
-            jsonArticles.push({
-                url: article.link.toString(),
-                imageUrl: articleImgUrl == null ? null : 'https://www.fakirpresse.info/' + articleImgUrl,
-                title: article.title.toString(),
-                publicationDate: new Date(article['dc:date']).toISOString(),
-                description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
-                author: author == null ? 'Inconnu' : author,
-                articleSource: {
-                    name: 'Fakir',
-                    url: 'https://www.fakirpresse.info/',
-                    imageUrl: 'https://www.fakirpresse.info/squelettes/css/img/logo.png',
-                },
-            });
+            // jsonArticles.push({
+            //     url: article.link.toString(),
+            //     imageUrl: articleImgUrl == null ? null : 'https://www.fakirpresse.info/' + articleImgUrl,
+            //     title: article.title.toString(),
+            //     publicationDate: new Date(article['dc:date']).toISOString(),
+            //     description: article.description.toString().replace(/(<([^>]+)>)/gi, ""),
+            //     author: author == null ? 'Inconnu' : author,
+            //     articleSource: {
+            //         name: 'Fakir',
+            //         url: 'https://www.fakirpresse.info/',
+            //         imageUrl: 'https://www.fakirpresse.info/squelettes/css/img/logo.png',
+            //     },
+            // });
+            mongoDataHandler.mongoAddArticle(
+                article.link.toString(),
+                articleImgUrl == null ? null : 'https://www.fakirpresse.info/' + articleImgUrl,
+                article.title.toString(),
+                new Date(article['dc:date']).toISOString(),
+                article.description.toString().replace(/(<([^>]+)>)/gi, ""),
+                author == null ? 'Inconnu' : author,
+                'Fakir',
+                'https://www.fakirpresse.info/',
+                'https://www.fakirpresse.info/squelettes/css/img/logo.png'
+            );
+
         }
-        console.log("RSS de Fakir récupéré. Sauvegarde...")
-        fs.unlinkSync('./news/Fakir.json');
-        fs.writeFileSync('./news/Fakir.json', JSON.stringify(jsonArticles, null, '\t'));
+        // console.log("RSS de Fakir récupéré. Sauvegarde...")
+        // fs.unlinkSync('./news/Fakir.json');
+        // fs.writeFileSync('./news/Fakir.json', JSON.stringify(jsonArticles, null, '\t'));
         console.log("Fakir Sauvegardé");
     });
 }
@@ -421,24 +458,39 @@ let updatePolitis = async function() {
                 author = getArticleAuthor(elem);
                 articleImgUrl = getArticleImageUrl(elem);
 
-                jsonArticles.push({
-                    url: article.link.toString(),
-                    imageUrl: articleImgUrl,
-                    title: article.title.toString(),
-                    publicationDate: new Date(article.pubDate).toISOString(),
-                    description: article.description ? article.description.toString().replace(/(<([^>]+)>)/gi, "") : '',
-                    author: author === undefined ? 'Inconnu' : author,
-                    articleSource: {
-                        name: 'Politis',
-                        url: 'https://www.politis.fr/',
-                        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
-                    },
-                });
+                // jsonArticles.push({
+                //     url: article.link.toString(),
+                //     imageUrl: articleImgUrl,
+                //     title: article.title.toString(),
+                //     publicationDate: new Date(article.pubDate).toISOString(),
+                //     description: article.description ? article.description.toString().replace(/(<([^>]+)>)/gi, "") : '',
+                //     author: author === undefined ? 'Inconnu' : author,
+                //     articleSource: {
+                //         name: 'Politis',
+                //         url: 'https://www.politis.fr/',
+                //         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
+                //     },
+                // });
+
+                mongoDataHandler.mongoAddArticle(
+                    article.link.toString(),
+                    articleImgUrl,
+                    article.title.toString(),
+                    new Date(article.pubDate).toISOString(),
+                    article.description ?
+                        article.description.toString().replace(/(<([^>]+)>)/gi, "") :
+                        '',
+                    author === undefined ? 'Inconnu' : author,
+                    'Politis',
+                    'https://www.politis.fr/',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098'
+                )
+
             }
         }
-        console.log("RSS de Politis récupéré. Sauvegarde...")
-        fs.unlinkSync('./news/Politis.json');
-        fs.writeFileSync('./news/Politis.json', JSON.stringify(jsonArticles, null, '\t'));
+        // console.log("RSS de Politis récupéré. Sauvegarde...")
+        // fs.unlinkSync('./news/Politis.json');
+        // fs.writeFileSync('./news/Politis.json', JSON.stringify(jsonArticles, null, '\t'));
         console.log("Politis Sauvegardé");
     });
 }
@@ -450,10 +502,10 @@ let updateNews = async function() {
         updateLRELP, // OK
         // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
         // updateLesJours, // OK
-        // updateReporterre, // OK
-        // updateEcoBretons, // OK
-        // updateFakir, // OK
-        // updatePolitis, // OK
+        updateReporterre, // OK
+        updateEcoBretons, // OK
+        updateFakir, // OK
+        updatePolitis, // OK
         // Une fois qu'un journal a une fonction permettant de récupérer tous
         // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
     ];
