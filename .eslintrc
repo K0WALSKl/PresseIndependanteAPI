@@ -1,3 +1,6 @@
 {
-    "extends": "eslint"
+    "extends": "eslint",
+    "env": {
+        "jest": true
+    }
 }

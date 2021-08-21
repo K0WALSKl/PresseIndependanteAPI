@@ -9,19 +9,24 @@ services:
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DATABASE: ${MONGO_DATABASE}
     volumes:
-      - ./:/usr/src/app:rw,cached
+      - ./:/usr/src/app
     working_dir: /usr/src/app
     user: ${CURRENT_UID}
     ports:
       - 3000:3000
     restart: always
     command: bash -c "npm i && npm start"
-#  db:
-#    image: mongo:latest
-#    container_name: db
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-#      MONGO_DATABASE: ${MONGO_DATABASE}
-#    ports:
-#      - 27017:27017
+  db:
+    image: mongo:latest
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: [ "CMD-SHELL", "curl http://localhost:27017" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5

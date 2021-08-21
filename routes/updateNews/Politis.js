@@ -56,20 +56,6 @@ async function updatePolitis() {
                 author = getArticleAuthor(elem);
                 articleImgUrl = getArticleImageUrl(elem);
 
-                // jsonArticles.push({
-                //     url: article.link.toString(),
-                //     imageUrl: articleImgUrl,
-                //     title: article.title.toString(),
-                //     publicationDate: new Date(article.pubDate).toISOString(),
-                //     description: article.description ? article.description.toString().replace(/(<([^>]+)>)/gi, "") : '',
-                //     author: author === undefined ? 'Inconnu' : author,
-                //     articleSource: {
-                //         name: 'Politis',
-                //         url: 'https://www.politis.fr/',
-                //         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098',
-                //     },
-                // });
-
                 mongoDataHandler.mongoAddArticle(
                     article.link.toString(),
                     articleImgUrl,
