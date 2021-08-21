@@ -1,66 +1,29 @@
-var express = require('express');
-var router = express.Router();
-const tools = require('./tools');
-const fs = require('fs');
-const globals = require('../globals');
-const mongoDataHandler = require('../api/mongoDataHandler');
+"use strict";
 
-// const newspapers = ["LaReleveEtLaPeste", "NouveauJourJ", "LesJours"];
-// const newspapersLinks = ["https://lareleveetlapeste.fr/", "http://www.nouveaujourj.fr/", "https://lesjours.fr/"];
-// const newspapersSupport = ["https://fr.tipeee.com/la-releve-et-la-peste", "http://www.nouveaujourj.fr/", "https://lesjours.fr/abonnement/jouriste"];
-// const newsPapersImages = ["https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg", "https://static.fnac-static.com/multimedia/Images/FR/NR/dd/78/6e/7239901/1540-1/tsp20150910164533/La-Releve-et-la-Peste.jpg", "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4c/Les_Jours.svg/1280px-Les_Jours.svg.png"];
-//
-// const supportedWebsites = {
-//     newspapers: [
-//         {
-//             name: 'LaReleveEtLaPeste',
-//             url: 'https://lareleveetlapeste.fr/',
-//             support_url: 'https://fr.tipeee.com/la-releve-et-la-peste',
-//             image_url: 'https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg',
-//         },
-//         {
-//             name: 'NouveauJourJ',
-//             url: 'http://www.nouveaujourj.fr/',
-//             support_url: 'http://www.nouveaujourj.fr/',
-//             image_url: 'https://static.fnac-static.com/multimedia/Images/FR/NR/dd/78/6e/7239901/1540-1/tsp20150910164533/La-Releve-et-la-Peste.jpg',
-//         },
-//         {
-//             name: 'LesJours',
-//             url: 'https://lesjours.fr/',
-//             support_url: 'https://lesjours.fr/abonnement/jouriste',
-//             image_url: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4c/Les_Jours.svg/1280px-Les_Jours.svg.png',
-//         },
-//     ]
-// }
+const express = require("express");
+// eslint-disable-next-line new-cap
+const router = express.Router();
+const mongoDataHandler = require("../api/mongoDataHandler");
 
+const LaReleveEtLaPeste = require("./updateNews/LRELP");
+const Reporterre = require("./updateNews/Reporterre");
+const Fakir = require("./updateNews/Fakir");
+const Politis = require("./updateNews/Politis");
 
 /* GET news listing. */
-router.get('/', function(req, res) {
-    // Liste du nom des journaux (chaque nom correspond à un fichier json dans /news/<journal>.json)
-    tools.updateNews();
+router.get("/", (req, res) => {
+    updateNews().then(r => process.stdout.write(r));
 
-    // let url = tools.get_article_image("La Relève Et la Peste", "https://lareleveetlapeste.fr/railcoop-veut-relancer-les-trains-de-nuit-et-les-lignes-abandonnees/");
-    // console.log(url);
-    // Tableau de json contenant tous les articles
-    let all_news = {
-        data: []
-    };
-
-    for (let i = 0; i < globals.supportedWebsites.newspapers.length; i++) {
-        let file = fs.readFileSync("./news/" + globals.supportedWebsites.newspapers[i].name + ".json", 'utf-8');
-        all_news.data.push({
-            "news_paper": globals.supportedWebsites.newspapers[i].name,
-            "url": globals.supportedWebsites.newspapers[i].url,
-            "donationUrl": globals.supportedWebsites.newspapers[i].support_url,
-            "imageUrl": globals.supportedWebsites.newspapers[i].image_url,
-            "articles": JSON.parse(file),
-        })
-        console.log("done")
-    }
-    res.contentType('application/json');
-    res.json(all_news);
+    mongoDataHandler.mongoGetArticles(articles => {
+        res.contentType("application/json");
+        res.json(articles);
+    });
 });
 
+/**
+ * Trie les deux articles en fonction de la date de parution.
+ * @return {number}
+ */
 function dateCompareInArticle(article_a, article_b) {
     if (article_a['publicationDate'] > article_b['publicationDate'])
         return -1;
@@ -69,26 +32,38 @@ function dateCompareInArticle(article_a, article_b) {
     return 0;
 }
 
-router.get('/sortedByDate', function(req, res) {
-    // tools.updateNews();
+async function updateNews() {
+    const updateNewsFunctions = [
+        LaReleveEtLaPeste.updateLRELP, // OK
+        // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
+        // updateLesJours, // OK
+        Reporterre.updateReporterre, // OK
+        // updateEcoBretons, // OK
+        Fakir.updateFakir, // OK
+        Politis.updatePolitis, // OK
+        // Une fois qu'un journal a une fonction permettant de récupérer tous
+        // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
+    ];
 
-    let all_news = {
-        data: []
-    };
+    for (let i = 0; i < updateNewsFunctions.length; i++) {
+        await updateNewsFunctions[i]();
+    }
+}
+
+router.get('/sortedByDate', function(req, res) {
+    updateNews().then(r => console.log(r));
     let sorted_news = {
         data: []
     }
 
     mongoDataHandler.mongoGetArticles(function(articles) {
-        console.log("De l'autre coté : " + articles[0])
         for (let i = 0; i < articles.length; i++)
             sorted_news.data.push(articles[i])
-
         sorted_news.data.sort(dateCompareInArticle)
-
         res.contentType('application/json');
         res.json(sorted_news);
     });
 });
 
 module.exports = router;
+exports.updateNews = updateNews;
