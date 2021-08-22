@@ -7,7 +7,8 @@ const got = require("got");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updatePolitis() {
-    process.stdout.write("Update de Politis...");
+    // eslint-disable-next-line no-console
+    console.log("Update de Politis...");
     const endpoint = "https://www.politis.fr/rss.xml";
 
     // eslint-disable-next-line jsdoc/require-jsdoc
@@ -24,11 +25,13 @@ async function updatePolitis() {
             }
             authors = authors.join(", ");
             if (tools.debugLevel === 1) {
-                process.stdout.write(`${authors}\n`);
+                // eslint-disable-next-line no-console
+                console.log(`${authors}\n`);
             }
         }
         if (tools.debugLevel === 1) {
-            process.stdout.write(`${authors}\n`);
+            // eslint-disable-next-line no-console
+            console.log(`${authors}\n`);
         }
         return authors === "" || authors === null ? "Inconnu" : authors;
     }
@@ -66,7 +69,8 @@ async function updatePolitis() {
             if (!article.title.toString().includes("[Blog]")) {
                 pageRes = await got(article.link.toString());
                 if (tools.debugLevel === 1) {
-                    process.stdout.write(`${article.link.toString()}\n`);
+                    // eslint-disable-next-line no-console
+                    console.log(`${article.link.toString()}\n`);
                 }
                 elem = HTMLParser.parse(pageRes.body);
                 author = getArticleAuthor(elem);
@@ -91,7 +95,8 @@ async function updatePolitis() {
             }
         }
         if (tools.debugLevel === 1) {
-            process.stdout.write("Politis Sauvegardé");
+            // eslint-disable-next-line no-console
+            console.log("Politis Sauvegardé");
         }
         return true;
     });

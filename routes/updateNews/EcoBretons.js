@@ -7,7 +7,8 @@ const HTMLParser = require("node-html-parser");
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updateEcoBretons() {
     if (tools.debugLevel === 1) {
-        process.stdout.write("Update de EcoBretons...");
+        // eslint-disable-next-line no-console
+        console.log("Update de EcoBretons...");
     }
     const endpoint = "https://www.eco-bretons.info/feed";
 
@@ -39,7 +40,8 @@ async function updateEcoBretons() {
 
         });
         if (tools.debugLevel === 1) {
-            process.stdout.write("EcoBretons Sauvegardé\n");
+            // eslint-disable-next-line no-console
+            console.log("EcoBretons Sauvegardé\n");
         }
     });
 }

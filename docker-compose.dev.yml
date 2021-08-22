@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+  api:
+    user: node
+    image: node:latest
+    container_name: api
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_HOST: ${MONGO_HOST}
+      DEBUG_LEVEL: ${DEBUG_LEVEL}
+    volumes:
+      - ./:/usr/src/app:rw,cached
+    working_dir: /usr/src/app
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    restart: always
+    command: bash -c "npm i && ./node_modules/.bin/nodemon ./bin/www"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl http://localhost:3000" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  db:
+    image: mongo:latest
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: [ "CMD-SHELL", "curl http://localhost:27017" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5

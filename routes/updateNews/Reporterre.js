@@ -7,7 +7,8 @@ const got = require("got");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updateReporterre() {
-    process.stdout.write("Update de Reporterre...");
+    // eslint-disable-next-line no-console
+    console.log("Update de Reporterre...");
     const endpoint = "https://reporterre.net/spip.php?page=backend-simple";
 
     // eslint-disable-next-line jsdoc/require-jsdoc
@@ -44,7 +45,8 @@ async function updateReporterre() {
                 // eslint-disable-next-line no-undefined
                 author = author === undefined ? "Inconnu" : author;
                 if (tools.debugLevel === 1) {
-                    process.stdout.write(`Finally : ${author.toString()}`);
+                    // eslint-disable-next-line no-console
+                    console.log(`Finally : ${author.toString()}`);
                 }
             }
             elem = HTMLParser.parse(article.description);
@@ -59,7 +61,8 @@ async function updateReporterre() {
                 "https://reporterre.net/IMG/siteon0.png?1588262321");
         }
         if (tools.debugLevel === 1) {
-            process.stdout.write("Reporterre Sauvegardé\n");
+            // eslint-disable-next-line no-console
+            console.log("Reporterre Sauvegardé\n");
         }
     });
 }

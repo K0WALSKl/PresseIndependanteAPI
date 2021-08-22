@@ -19,7 +19,8 @@ const ArticleSchema = new Schema({
 
 ArticleSchema.methods.addArticle = function(url, imageUrl, title, publicationDate, description, author,
     articleSourceName, articleSourceUrl, articleSourceImageUrl) {
-    process.stdout.write("Début Add Ticket");
+    // eslint-disable-next-line no-console
+    console.log("Début Add Ticket");
     this.url = url;
     this.imageUrl = imageUrl;
     this.title = title;
@@ -29,7 +30,8 @@ ArticleSchema.methods.addArticle = function(url, imageUrl, title, publicationDat
     this.articleSource.name = articleSourceName;
     this.articleSource.url = articleSourceUrl;
     this.articleSource.imageUrl = articleSourceImageUrl;
-    process.stdout.write("Fin Add Article");
+    // eslint-disable-next-line no-console
+    console.log("Fin Add Article");
 };
 
 module.exports = mongoose.model("Articles", ArticleSchema);

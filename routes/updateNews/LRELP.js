@@ -7,7 +7,8 @@ const got = require("got");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updateLRELP() {
-    process.stdout.write("Update de La Relève Et La Peste...");
+    // eslint-disable-next-line no-console
+    console.log("Update de La Relève Et La Peste...");
     const endpoint = "https://lareleveetlapeste.fr/feed";
 
     // eslint-disable-next-line jsdoc/require-jsdoc
@@ -51,7 +52,8 @@ async function updateLRELP() {
                 "https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg");
         }
         if (tools.debugLevel === 1) {
-            process.stdout.write("La Relève Et La Peste Sauvegardé\n");
+            // eslint-disable-next-line no-console
+            console.log("La Relève Et La Peste Sauvegardé\n");
         }
         return true;
     });

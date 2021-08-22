@@ -10,30 +10,43 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
     , articleSourceUrl, articleSourceImageUrl) {
     if (!url || !imageUrl || !title || !publicationDate || !description || !author || !articleSourceName ||
         !articleSourceUrl || !articleSourceImageUrl) {
-        process.stdout.write("mongoAddArticle : A parameter is missing : \n");
-        process.stdout.write(`url : ${url}\n`);
-        process.stdout.write(`imageUrl : ${imageUrl}\n`);
-        process.stdout.write(`title : ${title}\n`);
-        process.stdout.write(`publicationDate : ${publicationDate}\n`);
-        process.stdout.write(`description : ${description}\n`);
-        process.stdout.write(`author : ${author}\n`);
-        process.stdout.write(`articleSourceName : ${articleSourceName}\n`);
-        process.stdout.write(`articleSourceUrl : ${articleSourceUrl}\n`);
-        process.stdout.write(`articleSourceImageUrl : ${articleSourceImageUrl}\n`);
+        // eslint-disable-next-line no-console
+        console.log("mongoAddArticle : A parameter is missing : \n");
+        // eslint-disable-next-line no-console
+        console.log(`url : ${url}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`imageUrl : ${imageUrl}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`title : ${title}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`publicationDate : ${publicationDate}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`description : ${description}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`author : ${author}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`articleSourceName : ${articleSourceName}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`articleSourceUrl : ${articleSourceUrl}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`articleSourceImageUrl : ${articleSourceImageUrl}\n`);
         return false;
     }
 
     if (!Articles) {
-        process.stderr.write("It seems that the Articles model is not up ?");
+        // eslint-disable-next-line no-console
+        console.log("It seems that the Articles model is not up ?");
     }
 
     Article.findOne({ url }, (err, article) => {
         if (err) {
-            process.stderr.write(`${err}\n`);
+            // eslint-disable-next-line no-console
+            console.log(`${err}\n`);
         }
         if (article) {
             if (tools.debugLevel === 1) {
-                process.stdout.write(`Article "${title}" has already been saved (${articleSourceName})\n`);
+                // eslint-disable-next-line no-console
+                console.log(`Article "${title}" has already been saved (${articleSourceName})\n`);
             }
         } else {
             const newArticle = new Article({
@@ -52,7 +65,8 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
 
             newArticle.save().then(() => {
                 if (tools.debugLevel === 1) {
-                    process.stdout.write("Article saved\n");
+                    // eslint-disable-next-line no-console
+                    console.log("Article saved\n");
                 }
                 return true;
             });
@@ -71,7 +85,8 @@ function mongoGetArticles(callback) {
                 articlesJson.push(article);
             } else {
                 if (tools.debugLevel === 1) {
-                    process.stderr.write("Couldn't get the article in the mongoGetArticle method\n");
+                    // eslint-disable-next-line no-console
+                    console.log("Couldn't get the article in the mongoGetArticle method\n");
                 }
             }
         });
@@ -79,7 +94,8 @@ function mongoGetArticles(callback) {
         // console.log("En tout : " + articles_json.length)
         callback(articlesJson);
     }).catch(err => {
-        process.stderr.write(`${err}\n`);
+        // eslint-disable-next-line no-console
+        console.log(`${err}\n`);
         callback(false);
     });
     return null;

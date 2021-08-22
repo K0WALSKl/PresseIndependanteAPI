@@ -26,12 +26,13 @@ app.set("view engine", "pug");
 mongoHandler.mongoConnect();
 
 app.use("/getNews", getNews);
-if (tools.debugLevel === 0) {
+if (tools.debugLevel === 1) {
     getNews.updateNews();
 }
 
 cron.schedule("*/15 * * * *", () => { // 15 minutes
-    getNews.updateNews().then(r => process.stdout.write(r));
+    // eslint-disable-next-line no-console
+    getNews.updateNews().then(r => console.log(r));
 });
 
 module.exports = app;

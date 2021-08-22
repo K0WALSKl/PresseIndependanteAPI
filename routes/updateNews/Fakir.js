@@ -8,7 +8,8 @@ const got = require("got");
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updateFakir() {
     if (tools.debugLevel === 1) {
-        process.stdout.write("Update de Fakir...");
+        // eslint-disable-next-line no-console
+        console.log("Update de Fakir...");
     }
     const endpoint = "https://www.fakirpresse.info/spip.php?page=backend";
 
@@ -76,7 +77,8 @@ async function updateFakir() {
 
         }
         if (tools.debugLevel === 1) {
-            process.stdout.write("Fakir Sauvegardé\n");
+            // eslint-disable-next-line no-console
+            console.log("Fakir Sauvegardé\n");
         }
     });
 }
