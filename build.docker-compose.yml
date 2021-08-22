@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  api:
+    image: presse_idependante_api:latest
+    build: .
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+    volumes:
+      - ./:/usr/src/app
+    working_dir: /usr/src/app
+    user: ${CURRENT_UID}
+    ports:
+      - 3000:3000

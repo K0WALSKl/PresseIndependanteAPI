@@ -5,53 +5,59 @@ const mongoDataHandler = require("../../api/mongoDataHandler");
 const HTMLParser = require("node-html-parser");
 const got = require("got");
 
-/**
- * Parse et stock le journal Politis
- * @return {Promise<boolean>}
- */
+// eslint-disable-next-line jsdoc/require-jsdoc
 async function updatePolitis() {
     process.stdout.write("Update de Politis...");
-    const endpoint = 'https://www.politis.fr/rss.xml';
+    const endpoint = "https://www.politis.fr/rss.xml";
 
+    // eslint-disable-next-line jsdoc/require-jsdoc
     function getArticleAuthor(elem) {
-        let authors = elem.querySelector('.article-author-sign');
-        if (authors == null)
-            return undefined;
-        authors = elem.querySelector('h5').querySelectorAll('span')
-        if (authors != null) {
-            for (let i = 0; i < authors.length; i++) {
-                authors[i] = authors[i].querySelector('a').innerHTML;
-            }
-            authors = authors.join(', ');
-            console.log(authors);
-        }
-        console.log(authors);
-        return authors === "" || authors === null ? undefined : authors;
-    }
+        let authors = elem.querySelector(".article-author-sign");
 
-    function getArticleImageUrl(elem) {
-        let articleImgUrl = elem.querySelector('.hidden');
-        if (articleImgUrl != null) {
-            articleImgUrl = articleImgUrl.getAttribute('src');
+        if (authors === null) {
+            return "";
         }
-        // console.log(": ");
-        // console.log(": " + articleImgUrl);
+        authors = elem.querySelector("h5").querySelectorAll("span");
+        if (authors !== null) {
+            for (let i = 0; i < authors.length; i++) {
+                authors[i] = authors[i].querySelector("a").innerHTML;
+            }
+            authors = authors.join(", ");
+            if (tools.debugLevel === 1) {
+                process.stdout.write(`${authors}\n`);
+            }
+        }
+        if (tools.debugLevel === 1) {
+            process.stdout.write(`${authors}\n`);
+        }
+        return authors === "" || authors === null ? "Inconnu" : authors;
+    }
+    // eslint-disable-next-line jsdoc/require-jsdoc
+    function getArticleImageUrl(elem) {
+        let articleImgUrl = elem.querySelector(".hidden");
+
+        if (articleImgUrl !== null) {
+            articleImgUrl = articleImgUrl.getAttribute("src");
+        }
         return articleImgUrl;
     }
 
-    await tools.getJsonFromRSSFeed(endpoint, async function(res) {
+    await tools.getJsonFromRSSFeed(endpoint, async res => {
         let author;
         let pageRes;
         let elem;
         let articleImgUrl;
 
-        if (res.rss == null)
-            return false
+        if (res.rss === null) {
+            return false;
+        }
 
         for (const article of res.rss.channel[0].item) {
-            if (!article.title.toString().includes('[Blog]')) {
-                pageRes = await got(article.link.toString())
-                console.log(article.link.toString());
+            if (!article.title.toString().includes("[Blog]")) {
+                pageRes = await got(article.link.toString());
+                if (tools.debugLevel === 1) {
+                    process.stdout.write(`${article.link.toString()}\n`);
+                }
                 elem = HTMLParser.parse(pageRes.body);
                 author = getArticleAuthor(elem);
                 articleImgUrl = getArticleImageUrl(elem);
@@ -61,21 +67,23 @@ async function updatePolitis() {
                     articleImgUrl,
                     article.title.toString(),
                     new Date(article.pubDate).toISOString(),
-                    article.description ?
-                        article.description.toString().replace(/(<([^>]+)>)/gi, "") :
-                        '',
-                    author === undefined ? 'Inconnu' : author,
-                    'Politis',
-                    'https://www.politis.fr/',
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098'
-                )
+                    article.description
+                        // eslint-disable-next-line require-unicode-regexp
+                        ? article.description.toString().replace(/(<([^>]+)>)/gi, "")
+                        : "",
+                    // eslint-disable-next-line no-undefined
+                    author === undefined ? "Inconnu" : author,
+                    "Politis",
+                    "https://www.politis.fr/",
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_de_Politis.svg/640px-Logo_de_Politis.svg.png?1612704632098"
+                );
 
             }
         }
-        // console.log("RSS de Politis récupéré. Sauvegarde...")
-        // fs.unlinkSync('./news/Politis.json');
-        // fs.writeFileSync('./news/Politis.json', JSON.stringify(jsonArticles, null, '\t'));
-        console.log("Politis Sauvegardé");
+        if (tools.debugLevel === 1) {
+            process.stdout.write("Politis Sauvegardé");
+        }
+        return true;
     });
 }
 

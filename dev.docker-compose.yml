@@ -10,6 +10,7 @@ services:
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DATABASE: ${MONGO_DATABASE}
       MONGO_HOST: ${MONGO_HOST}
+      DEBUG_LEVEL: ${DEBUG_LEVEL}
     volumes:
       - ./:/usr/src/app:rw,cached
     working_dir: /usr/src/app
