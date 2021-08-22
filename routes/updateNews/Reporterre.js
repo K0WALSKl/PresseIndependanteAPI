@@ -44,7 +44,7 @@ async function updateReporterre() {
                 // eslint-disable-next-line no-undefined
                 author = author === undefined ? "Inconnu" : author;
                 if (tools.debugLevel === 1) {
-                    process.stdout.write(`Finally : ${author}`);
+                    process.stdout.write(`Finally : ${author.toString()}`);
                 }
             }
             elem = HTMLParser.parse(article.description);
@@ -59,7 +59,7 @@ async function updateReporterre() {
                 "https://reporterre.net/IMG/siteon0.png?1588262321");
         }
         if (tools.debugLevel === 1) {
-            process.stdout.write("Reporterre Sauvegardé");
+            process.stdout.write("Reporterre Sauvegardé\n");
         }
     });
 }

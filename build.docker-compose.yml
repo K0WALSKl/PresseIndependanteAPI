@@ -8,6 +8,7 @@ services:
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DATABASE: ${MONGO_DATABASE}
+      DEBUG_LEVEL: ${DEBUG_LEVEL}
     volumes:
       - ./:/usr/src/app
     working_dir: /usr/src/app

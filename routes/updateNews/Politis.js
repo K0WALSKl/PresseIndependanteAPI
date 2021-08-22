@@ -34,9 +34,19 @@ async function updatePolitis() {
     }
     // eslint-disable-next-line jsdoc/require-jsdoc
     function getArticleImageUrl(elem) {
+        let articleDiapo = elem.querySelectorAll(".diapo-img");
         let articleImgUrl = elem.querySelector(".hidden");
 
-        if (articleImgUrl !== null) {
+
+        if (articleDiapo.length !== 0) {
+            articleDiapo = articleDiapo[0]
+                .getAttribute("style")
+                .replace("background-image: url(", "")
+                .replace(");", "");
+            return articleDiapo;
+        }
+
+        if (typeof articleImgUrl !== "undefined") {
             articleImgUrl = articleImgUrl.getAttribute("src");
         }
         return articleImgUrl;

@@ -21,7 +21,7 @@ async function updateFakir() {
             articleImgUrl = articleImgUrl.querySelectorAll("img");
             if (tools.debugLevel === 1) {
                 process.stdout.write(">>>\\n");
-                process.stdout.write(articleImgUrl.length);
+                process.stdout.write(articleImgUrl.length.toString());
             }
             if (articleImgUrl.length !== 0) {
                 articleImgUrl = articleImgUrl[0].getAttribute("src");

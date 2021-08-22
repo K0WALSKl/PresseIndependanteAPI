@@ -10,16 +10,16 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
     , articleSourceUrl, articleSourceImageUrl) {
     if (!url || !imageUrl || !title || !publicationDate || !description || !author || !articleSourceName ||
         !articleSourceUrl || !articleSourceImageUrl) {
-        process.stdout.write("mongoAddArticle : A parameter is missing : ");
-        process.stdout.write(`url : ${url}`);
-        process.stdout.write(`imageUrl : ${imageUrl}`);
-        process.stdout.write(`title : ${title}`);
-        process.stdout.write(`publicationDate : ${publicationDate}`);
-        process.stdout.write(`description : ${description}`);
-        process.stdout.write(`author : ${author}`);
-        process.stdout.write(`articleSourceName : ${articleSourceName}`);
-        process.stdout.write(`articleSourceUrl : ${articleSourceUrl}`);
-        process.stdout.write(`articleSourceImageUrl : ${articleSourceImageUrl}`);
+        process.stdout.write("mongoAddArticle : A parameter is missing : \n");
+        process.stdout.write(`url : ${url}\n`);
+        process.stdout.write(`imageUrl : ${imageUrl}\n`);
+        process.stdout.write(`title : ${title}\n`);
+        process.stdout.write(`publicationDate : ${publicationDate}\n`);
+        process.stdout.write(`description : ${description}\n`);
+        process.stdout.write(`author : ${author}\n`);
+        process.stdout.write(`articleSourceName : ${articleSourceName}\n`);
+        process.stdout.write(`articleSourceUrl : ${articleSourceUrl}\n`);
+        process.stdout.write(`articleSourceImageUrl : ${articleSourceImageUrl}\n`);
         return false;
     }
 

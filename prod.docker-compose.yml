@@ -27,8 +27,16 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
     ports:
       - 27017:27017
+    volumes:
+    - shared_database:/data/db
     healthcheck:
       test: [ "CMD-SHELL", "curl http://localhost:27017" ]
       interval: 10s
       timeout: 5s
       retries: 5
+  vc_db:
+    image: mongo:latest
+    volumes:
+    - shared_database:/data/db
+volumes:
+  shared_database:

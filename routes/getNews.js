@@ -9,6 +9,8 @@ const LaReleveEtLaPeste = require("./updateNews/LRELP");
 const Reporterre = require("./updateNews/Reporterre");
 const Fakir = require("./updateNews/Fakir");
 const Politis = require("./updateNews/Politis");
+const EcoBretons = require("./updateNews/EcoBretons");
+
 const tools = require("./tools");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
@@ -18,7 +20,7 @@ async function updateNews() {
         // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
         // updateLesJours, // OK
         Reporterre.updateReporterre, // OK
-        // updateEcoBretons, // OK
+        EcoBretons.updateEcoBretons, // OK
         Fakir.updateFakir, // OK
         Politis.updatePolitis // OK
         // Une fois qu'un journal a une fonction permettant de récupérer tous
@@ -51,11 +53,11 @@ function dateCompareInArticle(articleA, articleB) {
 }
 
 router.get("/sortedByDate", (req, res) => {
-    updateNews().then(r => {
-        if (tools.debugLevel === 1) {
+    if (tools.debugLevel === 1) {
+        updateNews().then(r => {
             process.stdout.write(`${r}\n`);
-        }
-    });
+        });
+    }
 
     const sortedNews = {
         data: []
@@ -72,4 +74,4 @@ router.get("/sortedByDate", (req, res) => {
 });
 
 module.exports = router;
-exports.updateNews = updateNews;
+module.exports.updateNews = updateNews;
