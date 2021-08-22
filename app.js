@@ -9,10 +9,9 @@ const indexRouter = require("./routes/index");
 
 const mongoHandler = require("./api/mongoConnectionHandler");
 const getNews = require("./routes/getNews");
+const tools = require("./routes/tools");
 
 const app = express();
-
-// mongoConnect.mongoConnect();
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -27,7 +26,9 @@ app.set("view engine", "pug");
 mongoHandler.mongoConnect();
 
 app.use("/getNews", getNews);
-getNews.updateNews();
+if (tools.debugLevel === 0) {
+    getNews.updateNews();
+}
 
 cron.schedule("*/15 * * * *", () => { // 15 minutes
     getNews.updateNews().then(r => process.stdout.write(r));

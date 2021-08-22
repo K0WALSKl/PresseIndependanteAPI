@@ -23,8 +23,8 @@ async function updateNews() {
         EcoBretons.updateEcoBretons, // OK
         Fakir.updateFakir, // OK
         Politis.updatePolitis // OK
-        // Une fois qu'un journal a une fonction permettant de récupérer tous
-        // Les articles à partir de son flux rss, il faut rajouter la fonction ici.
+        // Once a NewsSource is ready to send the JSON, the function that allows to do it must
+        // be added there
     ];
 
     for (let i = 0; i < updateNewsFunctions.length; i++) {
@@ -34,7 +34,8 @@ async function updateNews() {
 
 /* GET news listing. */
 router.get("/", (req, res) => {
-    updateNews().then(r => process.stdout.write(r));
+    // eslint-disable-next-line no-console
+    updateNews().then(r => console.log(r));
     mongoDataHandler.mongoGetArticles(articles => {
         res.contentType("application/json");
         res.json(articles);
@@ -55,7 +56,8 @@ function dateCompareInArticle(articleA, articleB) {
 router.get("/sortedByDate", (req, res) => {
     if (tools.debugLevel === 1) {
         updateNews().then(r => {
-            process.stdout.write(`${r}\n`);
+            // eslint-disable-next-line no-console
+            console.log(r);
         });
     }
 

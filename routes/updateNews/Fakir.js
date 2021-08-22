@@ -20,8 +20,10 @@ async function updateFakir() {
         if (articleImgUrl !== null) {
             articleImgUrl = articleImgUrl.querySelectorAll("img");
             if (tools.debugLevel === 1) {
-                process.stdout.write(">>>\\n");
-                process.stdout.write(articleImgUrl.length.toString());
+                // eslint-disable-next-line no-console
+                console.log(">>>\n");
+                // eslint-disable-next-line no-console
+                console.log(articleImgUrl.length.toString());
             }
             if (articleImgUrl.length !== 0) {
                 articleImgUrl = articleImgUrl[0].getAttribute("src");
@@ -49,7 +51,7 @@ async function updateFakir() {
         let articleImgUrl;
         let author;
 
-        if (res.rss === null) {
+        if (typeof res === "undefined" || res.rss === null) {
             return;
         }
         for (const article of res.rss.channel[0].item) {

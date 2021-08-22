@@ -14,7 +14,7 @@ async function getJsonFromRSSFeed(endpoint, callback) {
         }
         xmlParser(body, (error, result) => {
             if (error) {
-                process.stderr.write(err);
+                process.stderr.write(error.toString());
             }
             callback(result);
             return true;

@@ -12,9 +12,9 @@ describe("Getting the articles", () => {
             if (!error) {
                 expect(response.statusCode).to.equal(200);
                 expect(body.data).to.be.instanceOf(Array);
-            } else {
-                process.stderr.write(error);
             }
+            // eslint-disable-next-line no-unused-expressions
+            expect(error).to.be.null;
             done();
         });
     });
@@ -34,9 +34,9 @@ describe("Getting the articles", () => {
                     }
                 }
                 expect(articleSourceNameFound.length).to.equal(variables.articleSourcesName.length);
-            } else {
-                process.stderr.write(error);
             }
+            // eslint-disable-next-line no-unused-expressions
+            expect(error).to.be.null;
             done();
         });
     });
@@ -48,9 +48,9 @@ describe("Getting the articles", () => {
                 for (let i = 0; i < body.data.length; i++) {
                     expect(Date.parse(body.data[i].publicationDate)).to.be.a("number");
                 }
-            } else {
-                process.stderr.write(error);
             }
+            // eslint-disable-next-line no-unused-expressions
+            expect(error).to.be.null;
             done();
         });
     });
