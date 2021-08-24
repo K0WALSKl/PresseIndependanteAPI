@@ -44,7 +44,7 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
             console.log(`${err}\n`);
         }
         if (article) {
-            if (tools.debugLevel === 1) {
+            if (tools.debugLevel === 2) {
                 // eslint-disable-next-line no-console
                 console.log(`Article "${title}" has already been saved (${articleSourceName})\n`);
             }
@@ -64,7 +64,7 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
             });
 
             newArticle.save().then(() => {
-                if (tools.debugLevel === 1) {
+                if (tools.debugLevel === 2) {
                     // eslint-disable-next-line no-console
                     console.log("Article saved\n");
                 }
@@ -84,7 +84,7 @@ function mongoGetArticles(callback) {
             if (article) {
                 articlesJson.push(article);
             } else {
-                if (tools.debugLevel === 1) {
+                if (tools.debugLevel === 2) {
                     // eslint-disable-next-line no-console
                     console.log("Couldn't get the article in the mongoGetArticle method\n");
                 }

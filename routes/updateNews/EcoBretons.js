@@ -6,7 +6,7 @@ const HTMLParser = require("node-html-parser");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updateEcoBretons() {
-    if (tools.debugLevel === 1) {
+    if (tools.debugLevel === 2) {
         // eslint-disable-next-line no-console
         console.log("Update de EcoBretons...");
     }
@@ -39,7 +39,7 @@ async function updateEcoBretons() {
             );
 
         });
-        if (tools.debugLevel === 1) {
+        if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console
             console.log("EcoBretons Sauvegardé\n");
         }

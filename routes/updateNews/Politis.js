@@ -24,12 +24,12 @@ async function updatePolitis() {
                 authors[i] = authors[i].querySelector("a").innerHTML;
             }
             authors = authors.join(", ");
-            if (tools.debugLevel === 1) {
+            if (tools.debugLevel === 2) {
                 // eslint-disable-next-line no-console
                 console.log(`${authors}\n`);
             }
         }
-        if (tools.debugLevel === 1) {
+        if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console
             console.log(`${authors}\n`);
         }
@@ -68,7 +68,7 @@ async function updatePolitis() {
         for (const article of res.rss.channel[0].item) {
             if (!article.title.toString().includes("[Blog]")) {
                 pageRes = await got(article.link.toString());
-                if (tools.debugLevel === 1) {
+                if (tools.debugLevel === 2) {
                     // eslint-disable-next-line no-console
                     console.log(`${article.link.toString()}\n`);
                 }
@@ -94,7 +94,7 @@ async function updatePolitis() {
 
             }
         }
-        if (tools.debugLevel === 1) {
+        if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console
             console.log("Politis Sauvegardé");
         }

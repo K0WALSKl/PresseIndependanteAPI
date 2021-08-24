@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "startdev": "nodemon ./app.js",
-    "test": "./node_modules/mocha/bin/mocha ./tests/api_tests.js"
+    "test": "./node_modules/mocha/bin/mocha --timeout 120000 ./tests/api_tests.js",
+    "ci" : "start-server-and-test start http://localhost:3000 test"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -30,6 +31,7 @@
     "jsdoc": "^3.6.7",
     "mocha": "^9.1.0",
     "nodemon": "^2.0.6",
+    "start-server-and-test": "^1.13.1",
     "supertest": "^6.1.6"
   }
 }

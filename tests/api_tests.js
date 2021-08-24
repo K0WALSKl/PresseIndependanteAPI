@@ -6,12 +6,34 @@ const request = require("request");
 const expect = require("chai").expect;
 const variables = require("./variables");
 
+// eslint-disable-next-line jsdoc/require-jsdoc
+function delay(seconds) {
+    return it("should delay", done => {
+        setTimeout(() => done(), (seconds * 1000));
+
+    }).timeout((seconds * 1000) + 100);
+}
+
 describe("Getting the articles", () => {
     it("Articles are being sent", done => {
         request(variables.getArticlesSortedByDate, (error, response, body) => {
             expect(response).to.be.not.an("undefined");
             expect(response.statusCode).to.equal(200);
             expect(body.data).to.be.instanceOf(Array);
+            done();
+        });
+    });
+    // eslint-disable-next-line no-console
+    console.log("Waiting 60 seconds while the database is being fed");
+    delay(60);
+    it("Every article sources have a valid publication date", done => {
+        request(variables.getArticlesSortedByDate, (error, response, body) => {
+            expect(response).to.be.not.an("undefined");
+            expect(response.statusCode).to.equal(200);
+
+            for (let i = 0; i < body.data.length; i++) {
+                expect(Date.parse(body.data[i].publicationDate)).to.be.a("number");
+            }
             done();
         });
     });
@@ -31,17 +53,6 @@ describe("Getting the articles", () => {
                 }
             }
             expect(articleSourceNameFound.length).to.equal(variables.articleSourcesName.length);
-            done();
-        });
-    });
-    it("Every article sources have a valid publication date", done => {
-        request(variables.getArticlesSortedByDate, (error, response, body) => {
-            expect(response).to.be.not.an("undefined");
-            expect(response.statusCode).to.equal(200);
-
-            for (let i = 0; i < body.data.length; i++) {
-                expect(Date.parse(body.data[i].publicationDate)).to.be.a("number");
-            }
             done();
         });
     });

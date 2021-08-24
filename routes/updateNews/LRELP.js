@@ -51,7 +51,7 @@ async function updateLRELP() {
                 "La Releve Et La Peste", "https://lareleveetlapeste.fr/",
                 "https://pbs.twimg.com/profile_images/785417519377031168/LIUJdFMe.jpg");
         }
-        if (tools.debugLevel === 1) {
+        if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console
             console.log("La Relève Et La Peste Sauvegardé\n");
         }

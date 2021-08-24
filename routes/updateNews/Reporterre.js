@@ -44,7 +44,7 @@ async function updateReporterre() {
                 author = getArticleAuthor(elemPageRes);
                 // eslint-disable-next-line no-undefined
                 author = author === undefined ? "Inconnu" : author;
-                if (tools.debugLevel === 1) {
+                if (tools.debugLevel === 2) {
                     // eslint-disable-next-line no-console
                     console.log(`Finally : ${author.toString()}`);
                 }
@@ -60,7 +60,7 @@ async function updateReporterre() {
                 "Reporterre", "https://reporterre.net/",
                 "https://reporterre.net/IMG/siteon0.png?1588262321");
         }
-        if (tools.debugLevel === 1) {
+        if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console
             console.log("Reporterre Sauvegardé\n");
         }

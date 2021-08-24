@@ -7,7 +7,7 @@ const got = require("got");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function updateFakir() {
-    if (tools.debugLevel === 1) {
+    if (tools.debugLevel === 2) {
         // eslint-disable-next-line no-console
         console.log("Update de Fakir...");
     }
@@ -20,7 +20,7 @@ async function updateFakir() {
 
         if (articleImgUrl !== null) {
             articleImgUrl = articleImgUrl.querySelectorAll("img");
-            if (tools.debugLevel === 1) {
+            if (tools.debugLevel === 2) {
                 // eslint-disable-next-line no-console
                 console.log(">>>\n");
                 // eslint-disable-next-line no-console
@@ -76,7 +76,7 @@ async function updateFakir() {
             );
 
         }
-        if (tools.debugLevel === 1) {
+        if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console
             console.log("Fakir Sauvegardé\n");
         }

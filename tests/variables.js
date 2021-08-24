@@ -1,6 +1,6 @@
 "use strict";
 
-const host = "http://127.0.0.1:3000";
+const host = "http://localhost:3000";
 
 const articleSourcesName = [
     "Eco-Bretons",

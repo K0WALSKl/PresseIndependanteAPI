@@ -54,7 +54,7 @@ function dateCompareInArticle(articleA, articleB) {
 }
 
 router.get("/sortedByDate", (req, res) => {
-    if (tools.debugLevel === 1) {
+    if (tools.debugLevel === 2) {
         updateNews().then(r => {
             // eslint-disable-next-line no-console
             console.log(r);
