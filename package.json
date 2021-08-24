@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "startdev": "nodemon ./app.js",
     "test": "./node_modules/mocha/bin/mocha --timeout 120000 ./tests/api_tests.js",
-    "ci" : "start-server-and-test start http://localhost:3000 test"
+    "ci" : "start-server-and-test start http://localhost:3000 test",
+    "lint": "./node_modules/eslint/bin/eslint.js ./api/*.js ./routes/*.js ./routes/updateNews/*.js ./tests/*.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
