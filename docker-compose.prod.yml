@@ -33,7 +33,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-    - $PWD/data/db:/data/db
+    - ${MONGO_VOLUME_PATH}/data/db:/data/db
     healthcheck:
       test: [ "CMD-SHELL", "curl http://localhost:27017" ]
       interval: 10s
