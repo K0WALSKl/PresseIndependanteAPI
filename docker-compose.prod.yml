@@ -36,6 +36,6 @@ services:
     - ${MONGO_VOLUME_PATH}/data/db:/data/db
     healthcheck:
       test: [ "CMD-SHELL", "mongo --norc --quiet --host=localhost:27017 <<< 'db.getMongo()'" ]
-      interval: 10s
+      interval: 20s
       timeout: 5s
       retries: 5
