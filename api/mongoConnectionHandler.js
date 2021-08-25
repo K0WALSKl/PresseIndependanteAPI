@@ -26,9 +26,7 @@ function mongoConnect() {
 
 mongoose.connection.on("disconnected", () => {
     // eslint-disable-next-line no-console
-    console.log(`mongodb://${mongoUsername}:${mongoPassword}@${mongoHost}/${mongoDatabase}?authSource=admin\n`);
-    // eslint-disable-next-line no-console
-    console.log("There was an error during the connection to MongoDB\n");
+    console.log("MongoDB Disconnected");
     // eslint-disable-next-line node/no-process-exit
     process.exit(1);
 });
