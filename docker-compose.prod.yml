@@ -11,8 +11,6 @@ services:
       MONGO_DATABASE: ${MONGO_DATABASE}
       MONGO_HOST: ${MONGO_HOST}
       DEBUG_LEVEL: ${DEBUG_LEVEL}
-    volumes:
-      - ./:/usr/src/app
     working_dir: /usr/src/app
     user: ${CURRENT_UID}
     ports:
