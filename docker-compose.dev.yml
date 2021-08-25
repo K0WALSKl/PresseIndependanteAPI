@@ -35,7 +35,7 @@ services:
     ports:
       - 27017:27017
     healthcheck:
-      test: [ "CMD-SHELL", "curl http://localhost:27017" ]
+      test: [ "CMD-SHELL", "mongo --norc --quiet --host=localhost:27017 <<< 'db.getMongo()'" ]
       interval: 10s
       timeout: 5s
       retries: 5
