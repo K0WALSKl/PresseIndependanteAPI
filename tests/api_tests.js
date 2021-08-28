@@ -24,7 +24,7 @@ describe("Getting the articles", () => {
         });
     });
     // eslint-disable-next-line no-console
-    console.log("Waiting 60 seconds while the database is being fed");
+    console.log("The next tests are being run against the data. Waiting 60 seconds while the database is being fed");
     delay(60);
     it("Every article sources have a valid publication date", done => {
         request(variables.getArticlesSortedByDate, (error, response, body) => {
@@ -53,6 +53,18 @@ describe("Getting the articles", () => {
                 }
             }
             expect(articleSourceNameFound.length).to.equal(variables.articleSourcesName.length);
+            done();
+        });
+    });
+    it("Every articles have a valid imageUrl field", done => {
+        request(variables.getArticlesSortedByDate, (error, response, body) => {
+            expect(response).to.be.not.an("undefined");
+            expect(response.statusCode).to.equal(200);
+
+            for (let i = 0; i < body.data.length; i++) {
+                expect(body.data[i].imageUrl).to.be.not.an("undefined");
+                expect(body.data[i].imageUrl.length).to.be.greaterThan(8);
+            }
             done();
         });
     });
