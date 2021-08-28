@@ -52,13 +52,16 @@ async function updateReporterre() {
             elem = HTMLParser.parse(article.description);
             imgUrl = (elem.querySelector("img") === null ? null : elem.querySelector("img").getAttribute("src"));
 
-            mongoDataHandler.mongoAddArticle(article.link.toString(), imgUrl,
+            mongoDataHandler.mongoAddArticle(
+                article.link.toString(),
+                imgUrl,
                 // eslint-disable-next-line no-control-regex,require-unicode-regexp
                 article.title.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
                 new Date(article["dc:date"]).toISOString(),
                 elem.querySelector("p").text, author.toString(),
                 "Reporterre", "https://reporterre.net/",
-                "https://reporterre.net/IMG/siteon0.png?1588262321");
+                "https://reporterre.net/IMG/siteon0.png?1588262321"
+            );
         }
         if (tools.debugLevel === 2) {
             // eslint-disable-next-line no-console

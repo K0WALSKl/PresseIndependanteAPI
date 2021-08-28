@@ -59,7 +59,7 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
                 articleSource: {
                     name: articleSourceName,
                     url: articleSourceUrl,
-                    imageUrl: articleSourceUrl
+                    imageUrl: articleSourceImageUrl
                 }
             });
 
