@@ -29,11 +29,6 @@ pipeline {
                         sh "docker stop db && docker rm \$(docker ps -aq --filter 'status=exited')"
                     }
                 }
-//                stage('Merge') { TROUVER UN MOYEN DE MERGE
-//                    steps {
-//                        sh "git checkout master && git merge develop && git push origin master && git checkout develop"
-//                   }
-//                }
                 stage('Build and push the API image') {
                     steps {
                         script {
@@ -59,12 +54,13 @@ pipeline {
                         sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
                     }
                 }
-            } post {
-                failure {
-                    echo 'Error, restarting the API'
-                    sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
-                }
             }
+        }
+    }
+    post {
+        failure {
+            echo 'Error, restarting the API'
+            sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
         }
     }
 }
