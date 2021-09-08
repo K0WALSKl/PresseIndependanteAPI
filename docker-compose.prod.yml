@@ -4,7 +4,6 @@ services:
   api:
     image: k0walski/presse_idependante_gwendhal_claudel_api:latest
     container_name: api
-    build: docker-compose
     environment:
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
@@ -12,7 +11,6 @@ services:
       MONGO_HOST: ${MONGO_HOST}
       DEBUG_LEVEL: ${DEBUG_LEVEL}
     working_dir: /usr/src/app
-    user: ${CURRENT_UID}
     ports:
       - 3000:3000
     depends_on:
