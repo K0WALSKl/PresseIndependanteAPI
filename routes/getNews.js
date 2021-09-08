@@ -70,6 +70,7 @@ router.get("/sortedByDate", (req, res) => {
             sortedNews.data.push(articles[i]);
         }
         sortedNews.data.sort(dateCompareInArticle);
+        res.header("Access-Control-Allow-Origin", "*");
         res.contentType("application/json");
         res.json(sortedNews);
     });

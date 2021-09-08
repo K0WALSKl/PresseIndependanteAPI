@@ -79,7 +79,7 @@ function mongoAddArticle(url, imageUrl, title, publicationDate, description, aut
 function mongoGetArticles(callback) {
     const articlesJson = [];
 
-    Article.find({}).then(articles => {
+    Article.find({}).select("-__v -_id").then(articles => {
         articles.forEach(article => {
             if (article) {
                 articlesJson.push(article);

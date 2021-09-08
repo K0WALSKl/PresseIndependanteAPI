@@ -10,12 +10,16 @@ const indexRouter = require("./routes/index");
 const mongoHandler = require("./api/mongoConnectionHandler");
 const getNews = require("./routes/getNews");
 const tools = require("./routes/tools");
+const cors = require("cors");
 
 const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(cors());
+app.options("*", cors());
 
 // eslint-disable-next-line no-underscore-dangle
 app.engine("pug", require("pug").__express);
