@@ -58,11 +58,11 @@ pipeline {
                         sh "docker rmi " + registry + " || true"
                         sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
                     }
-                } post {
-                    failure {
-                        echo 'Error, restarting the API'
-                        sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
-                    }
+                }
+            } post {
+                failure {
+                    echo 'Error, restarting the API'
+                    sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
                 }
             }
         }
