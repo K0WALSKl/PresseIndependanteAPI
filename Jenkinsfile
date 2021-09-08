@@ -51,7 +51,6 @@ pipeline {
                         git branch: 'develop', credentialsId: 'jenkins_github_token', url: 'https://github.com/K0WALSKl/PresseIndependanteAPI.git'
                         sh "docker-compose -f docker-compose.prod.yml down || true"
                         sh "docker rmi " + registry + " || true"
-                        sh "docker login"
                         sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose.prod.yml up -d"
                     }
                 }

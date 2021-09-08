@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   api:
-    image: k0walski/presse_idependante_gwendhal_claudel_api:${BUILD_NUMBER}
+    image: k0walski/presse_idependante_gwendhal_claudel_api:0.${BUILD_NUMBER}
     container_name: api
     environment:
       MONGO_USERNAME: ${MONGO_USERNAME}
