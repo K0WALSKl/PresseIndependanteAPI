@@ -19,13 +19,13 @@ pipeline {
                 }
                 stage('Lint') {
                     steps {
-                        sh "docker-compose -f docker-compose/docker-compose.dev.yml run api npm run lint"
+                        sh "docker-compose -f docker-compose.dev.yml run api npm run lint"
                         sh "docker stop db && docker rm \$(docker ps -aq --filter 'status=exited')"
                     }
                 }
                 stage('Test') {
                     steps {
-                        sh "docker-compose --env-file .env.test -f docker-compose/docker-compose.dev.yml run api npm run ci"
+                        sh "docker-compose --env-file .env.test -f docker-compose.dev.yml run api npm run ci"
                         sh "docker stop db && docker rm \$(docker ps -aq --filter 'status=exited')"
                     }
                 }
@@ -49,15 +49,15 @@ pipeline {
                 stage('Deploy on master node') {
                     steps {
                         git branch: 'develop', credentialsId: 'jenkins_github_token', url: 'https://github.com/K0WALSKl/PresseIndependanteAPI.git'
-                        sh "docker-compose -f docker-compose/docker-compose.prod.yml down || true"
+                        sh "docker-compose -f docker-compose.prod.yml down || true"
                         sh "docker rmi " + registry + " || true"
-                        sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
+                        sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose.prod.yml up -d"
                     }
                 }
             }
             post {
                 failure {
-                    sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
+                    sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose.prod.yml up -d"
                 }
             }
         }
