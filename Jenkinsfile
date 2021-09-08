@@ -4,7 +4,7 @@ pipeline {
         registryCredential = "docker_hub_token"
         dockerImage = ""
     }
-    agent none
+    agent any
 
     stages {
         stage("Lint, Test, Merge, Build, and push to the Docker Hub") {
@@ -59,7 +59,6 @@ pipeline {
     }
     post {
         failure {
-            echo 'Error, restarting the API'
             sh "docker-compose --env-file $ENV_PROD_PATH -f docker-compose/docker-compose.prod.yml up -d"
         }
     }
