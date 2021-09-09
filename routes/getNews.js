@@ -10,6 +10,7 @@ const Reporterre = require("./updateNews/Reporterre");
 const Fakir = require("./updateNews/Fakir");
 const Politis = require("./updateNews/Politis");
 const EcoBretons = require("./updateNews/EcoBretons");
+const Alter1fo = require("./updateNews/Alter1fo");
 
 const tools = require("./tools");
 
@@ -17,12 +18,12 @@ const tools = require("./tools");
 async function updateNews() {
     const updateNewsFunctions = [
         LaReleveEtLaPeste.updateLRELP, // OK
-        // updateNouveauJourJ, // Supprimé car le dernier article date du 24 octobre 2019
-        // updateLesJours, // OK
         Reporterre.updateReporterre, // OK
         EcoBretons.updateEcoBretons, // OK
         Fakir.updateFakir, // OK
-        Politis.updatePolitis // OK
+        Politis.updatePolitis, // OK
+        Alter1fo.updateAlter1fo
+
         // Once a NewsSource is ready to send the JSON, the function that allows to do it must
         // be added there
     ];

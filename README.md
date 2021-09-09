@@ -10,6 +10,7 @@ Express API parsing multiple RSS feeds from independant medias in France. Here i
 | La Relève et la Peste | https://lareleveetlapeste.fr/ | YES | YES |
 | Politis | https://www.politis.fr/ | YES | YES |
 | Reporterre | https://reporterre.net | YES | YES |
+| Alter1fo | http://alter1fo.com/ | YES | YES |
 
 The best route to use is /getNews/sortedByDate.
 
