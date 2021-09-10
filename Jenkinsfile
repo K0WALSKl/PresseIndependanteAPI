@@ -42,11 +42,6 @@ pipeline {
             }
             post {
                 success {
-                    sh '''
-                        ls
-                        echo $PWD
-                        echo $WORKSPACE
-                    '''
                     junit 'test-results.xml'
                 }
             }
