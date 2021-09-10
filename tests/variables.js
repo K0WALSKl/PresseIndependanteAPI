@@ -2,13 +2,14 @@
 
 const host = "http://localhost:3000";
 
-const articleSourcesName = [
-    "Eco-Bretons",
-    "Fakir",
-    "La Releve Et La Peste",
-    "Politis",
-    "Reporterre"
-];
+const articleSourceNamePresence = {
+    "Eco-Bretons": false,
+    Fakir: false,
+    "La Releve Et La Peste": false,
+    Politis: false,
+    Reporterre: false,
+    Alter1fo: false
+};
 
 const getArticlesSortedByDate = {
     url: `${host}/getNews/sortedByDate`,
@@ -20,6 +21,6 @@ const getArticlesSortedByDate = {
 };
 
 module.exports = {
-    articleSourcesName,
-    getArticlesSortedByDate
+    getArticlesSortedByDate,
+    articleSourceNamePresence
 };

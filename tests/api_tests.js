@@ -25,7 +25,7 @@ describe("Getting the articles", () => {
     });
     // eslint-disable-next-line no-console
     console.log("The next tests are being run against the data. Waiting 60 seconds while the database is being fed");
-    delay(60);
+    delay(30);
     it("Every article sources have a valid publication date", done => {
         request(variables.getArticlesSortedByDate, (error, response, body) => {
             expect(response).to.be.not.an("undefined");
@@ -38,21 +38,25 @@ describe("Getting the articles", () => {
         });
     });
     it("Every supported article sources are included in the response", done => {
-        const articleSourceNameFound = [];
-
         request(variables.getArticlesSortedByDate, (error, response, body) => {
             expect(response).to.be.not.an("undefined");
             expect(response.statusCode).to.equal(200);
 
             for (let i = 0;
                 i < body.data.length &&
-                variables.articleSourcesName.length !== articleSourceNameFound.length;
+                !(false in variables.articleSourceNamePresence);
                 i++) {
-                if (!articleSourceNameFound.includes(body.data[i].articleSource.name)) {
-                    articleSourceNameFound.push(body.data[i].articleSource.name);
+                if (variables.articleSourceNamePresence[body.data[i].articleSource.name] === false) {
+                    variables.articleSourceNamePresence[body.data[i].articleSource.name] = true;
                 }
             }
-            expect(articleSourceNameFound.length).to.equal(variables.articleSourcesName.length);
+            // eslint-disable-next-line no-unused-vars
+            for (const [key, value] of Object.entries(variables.articleSourceNamePresence)) {
+                // eslint-disable-next-line no-unused-expressions
+                expect(key).to.be.not.an("undefined");
+                // eslint-disable-next-line no-unused-expressions
+                expect(value).to.be.true;
+            }
             done();
         });
     });
