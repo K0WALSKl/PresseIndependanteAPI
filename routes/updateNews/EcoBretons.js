@@ -15,7 +15,7 @@ async function updateEcoBretons() {
     await tools.getJsonFromRSSFeed(endpoint, res => {
         let elem;
 
-        if (res.rss === null) {
+        if (res === null || res.rss === null) {
             return;
         }
         res.rss.channel[0].item.forEach(article => {

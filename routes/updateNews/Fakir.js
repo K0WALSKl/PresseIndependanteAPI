@@ -52,7 +52,7 @@ async function updateFakir() {
         let articleImgUrl;
         let author;
 
-        if (typeof res === "undefined" || res.rss === null) {
+        if (typeof res === "undefined" || res === null || res.rss === null) {
             return;
         }
         for (const article of res.rss.channel[0].item) {

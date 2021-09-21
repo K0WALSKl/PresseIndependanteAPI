@@ -18,8 +18,8 @@ services:
     restart: always
     healthcheck:
       test: [ "CMD-SHELL", "curl http://localhost:3000" ]
-      interval: 30s
-      timeout: 5s
+      interval: 60s
+      timeout: 30s
       retries: 5
       start_period: 20s
   db:
@@ -35,7 +35,7 @@ services:
     - ${MONGO_VOLUME_PATH}/data/db:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/presseIndependante --quiet
-      interval: 30s
-      timeout: 5s
+      interval: 120s
+      timeout: 30s
       retries: 5
       start_period: 20s

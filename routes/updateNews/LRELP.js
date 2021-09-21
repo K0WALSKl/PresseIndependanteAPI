@@ -27,7 +27,7 @@ async function updateLRELP() {
     await tools.getJsonFromRSSFeed(endpoint, async res => {
         let author;
 
-        if (res.rss === null) {
+        if (res === null || res.rss === null) {
             return false;
         }
 

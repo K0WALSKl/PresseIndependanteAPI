@@ -11,7 +11,7 @@ async function updateAlter1fo() {
     const endpoint = "http://alter1fo.com/feed";
 
     await tools.getJsonFromRSSFeed(endpoint, async res => {
-        if (res.rss === null) {
+        if (res === null || res.rss === null) {
             return;
         }
         res.rss.channel[0].item.forEach(article => {

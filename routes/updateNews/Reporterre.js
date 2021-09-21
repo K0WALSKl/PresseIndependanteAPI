@@ -29,7 +29,7 @@ async function updateReporterre() {
         let imgUrl;
 
 
-        if (res.rss === null) {
+        if (res === null || res.rss === null) {
             return;
         }
         for (let i = 0; i < res.rss.channel[0].item.length; i++) {

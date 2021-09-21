@@ -61,7 +61,7 @@ async function updatePolitis() {
         let elem;
         let articleImgUrl;
 
-        if (res.rss === null) {
+        if (res === null || res.rss === null) {
             return false;
         }
 
